@@ -12,7 +12,6 @@ interface Props {
 const TransactionInputAndOutputs: React.FC<Props> = ({ transactionInfos }) => {
   return (
     <>
-      {console.log(transactionInfos)}
       {transactionInfos &&
         transactionInfos?.map((transaction: TransactionInfo, index) => (
           <ListGroup key={index} className="my-3" style={{ boxShadow: 'none' }}>

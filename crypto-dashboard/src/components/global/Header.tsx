@@ -13,15 +13,12 @@ const Header = () => {
     if (searchValue.substring(0, 10) === BLOCK_HASH_TARGET) {
       BlockUrlsApi.getBlockHeightByHash({ hash: searchValue })
         .then((res) => {
-          console.log(res);
           navigate(`/block/${res.height}`);
         })
         .catch((err) => console.log(err));
     } else if (searchValue.match(BLOCK_HEIGHT_REGEX)) {
-      console.log('blockNumber');
       navigate(`/block/${searchValue}`);
     } else if (searchValue.length > 7) {
-      console.log('transaction');
       navigate(`/transaction/${searchValue}`);
     }
   };

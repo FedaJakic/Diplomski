@@ -41,7 +41,6 @@ const OneTransactionDetail: React.FC<Props> = ({ transactionInfos }) => {
                   <p>Number of outputs {transaction?.transactionOut.length}</p>
                   {transaction?.transactionOut.map((tOut, index) => (
                     <Alert key={tOut.address + index} variant={'info'}>
-                      <>{console.log(tOut)}</>
                       <p>{tOut?.value} BTC</p>
                       <p>
                         {parseFloat(tOut?.value) === 0
