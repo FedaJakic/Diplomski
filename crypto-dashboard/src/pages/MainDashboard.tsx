@@ -1,14 +1,12 @@
 import React from 'react';
-import BlockchainHeight from '../components/dashboard/BlockchainHeight';
-import { Container } from '@mui/material';
+import LastBlocksInfos from '../components/dashboard/LastBlocksInfos';
+import Container from 'react-bootstrap/esm/Container';
 
-const MainDashboard = () => {
+const MainDashboard: React.FC = () => {
   return (
-    <>
-      <Container style={{ margin: '12px' }} maxWidth="lg">
-        <BlockchainHeight />
-      </Container>
-    </>
+    <Container className="d-flex flex-column justify-content-center align-items-center">
+      <LastBlocksInfos />
+    </Container>
   );
 };
 

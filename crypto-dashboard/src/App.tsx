@@ -1,23 +1,21 @@
 import { Route, Routes } from 'react-router-dom';
-import './App.css';
-import MainSidebar from './components/global/MainSidebar';
-import WalletPage from './pages/WalletPage';
-import { Grid } from '@mui/material';
 import MainDashboard from './pages/MainDashboard';
+import Header from './components/global/Header';
+import BlockInformation from './pages/BlockInformation';
+import Footer from './components/global/Footer';
 
 function App() {
   return (
-    <Grid container>
-      <Grid item>
-        <MainSidebar />
-      </Grid>
-      <Grid item xs>
+    <>
+      <Header />
+      <main className="bg-body-tertiary" style={{ minHeight: '88.4vh' }}>
         <Routes>
           <Route path="/" element={<MainDashboard />} />
-          <Route path="/wallet" element={<WalletPage />} />
+          <Route path="/block/:blockHeight" element={<BlockInformation />} />
         </Routes>
-      </Grid>
-    </Grid>
+      </main>
+      <Footer />
+    </>
   );
 }
 
