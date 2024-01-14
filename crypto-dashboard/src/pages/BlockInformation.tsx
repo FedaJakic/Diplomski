@@ -3,9 +3,10 @@ import Container from 'react-bootstrap/esm/Container';
 import { Row, Pagination } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import BasicBlockHeightInfo from '../components/block/BasicBlockHeightInfo';
+import { BlockInfo } from '../util/block/types';
+import TransactionInputAndOutputs from '../components/transaction/TransactionInputAndOutputs';
 import { BlockUrlsApi } from '../api/block';
-import { BlockInfo, TransactionInfo } from '../util/block/types';
-import TransactionInputAndOutputs from '../components/block/TransactionInputAndOutputs';
+import { TransactionInfo } from '../util/transaction/types';
 
 const BlockInformation: React.FC = () => {
   const { blockHeight } = useParams();
@@ -13,7 +14,7 @@ const BlockInformation: React.FC = () => {
   const [transactionsInfos, setTransactionsInfos] =
     useState<TransactionInfo[]>();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 20;
   const transactionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

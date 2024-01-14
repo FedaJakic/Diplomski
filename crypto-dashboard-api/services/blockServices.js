@@ -14,7 +14,7 @@ const getLastSixBlocksInfo = asyncHandler(async (req, res) => {
     const recentBlockHeights = [];
     for (
       let blockHeight = blockCount;
-      blockHeight > blockCount - 6;
+      blockHeight > blockCount - 10;
       blockHeight--
     ) {
       const hash = await client.getBlockHash(blockHeight);
@@ -59,6 +59,7 @@ const getBlockInfo = asyncHandler(async (req, res) => {
 
     const transactionInfos = blockInfo.tx.map((transactionInfo) => {
       const transactionId = transactionInfo.txid;
+
       const transactionIn = transactionInfo.vin.map((v) => {
         return {
           txId: v.txid,
@@ -89,11 +90,31 @@ const getBlockInfo = asyncHandler(async (req, res) => {
       transactionInfos,
     };
 
-    res.status(200).json(result);
+    res.status(200).send(result);
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error', error });
+    res.status(500).send(error);
   }
 });
 
-export { getLastSixBlocksInfo, getBlockInfo };
+// @desc    Get block info by Hash
+// @route   Post /api/blocks/getBlockInfoByHash
+// @access  Public
+const getBlockHeightByHash = asyncHandler(async (req, res) => {
+  try {
+    const { hash } = req.body;
+    const client = createBitcoinClient();
+
+    const responseBlockStats = await client.getBlockStats(hash);
+
+    const result = {
+      hash: hash,
+      height: responseBlockStats.height,
+    };
+
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+export { getLastSixBlocksInfo, getBlockInfo, getBlockHeightByHash };

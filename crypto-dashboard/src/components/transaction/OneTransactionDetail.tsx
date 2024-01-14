@@ -1,27 +1,27 @@
 import React from 'react';
 import { Alert, Col, ListGroup, Row } from 'react-bootstrap';
-import { TransactionInfo, TransactionOut } from '../../util/block/types';
+import { Link } from 'react-router-dom';
+import { TransactionInfo, TransactionOut } from '../../util/transaction/types';
+import { sumTotalValue } from '../../util/transaction/helpers';
+import { isObjectEmpty } from '../../util/helpers';
 
 interface Props {
   transactionInfos: any[] | undefined;
 }
 
-const TransactionInputAndOutputs: React.FC<Props> = ({ transactionInfos }) => {
-  const sumTotalValue = (transactionOut: TransactionOut[]): String => {
-    const totalValue = transactionOut.reduce(
-      (sum, transaction) => sum + parseFloat(transaction.value),
-      0
-    );
-
-    return totalValue.toString();
-  };
+const OneTransactionDetail: React.FC<Props> = ({ transactionInfos }) => {
   return (
     <>
       {transactionInfos &&
         transactionInfos?.map((transaction: TransactionInfo, index) => (
           <ListGroup key={index} className="my-3" style={{ boxShadow: 'none' }}>
-            <ListGroup.Item className="text-center">
-              {transaction?.transactionId}
+            <ListGroup.Item active className="text-center">
+              <Link
+                to={`/transaction/${transaction.transactionId}`}
+                style={{ color: '#fff', textDecoration: 'none' }}
+              >
+                {transaction?.transactionId}
+              </Link>
             </ListGroup.Item>
             <ListGroup.Item>
               <Row>
@@ -29,7 +29,11 @@ const TransactionInputAndOutputs: React.FC<Props> = ({ transactionInfos }) => {
                   <p>Number of inputs {transaction?.transactionIn.length}</p>
                   {transaction?.transactionIn.map((tIn, index) => (
                     <Alert key={tIn.txId + index} variant={'primary'}>
-                      <p>{tIn?.txId}</p>
+                      <p>
+                        {isObjectEmpty(tIn) || tIn.txId === undefined
+                          ? 'From Block Reward'
+                          : tIn?.txId}
+                      </p>
                     </Alert>
                   ))}
                 </Col>
@@ -37,8 +41,13 @@ const TransactionInputAndOutputs: React.FC<Props> = ({ transactionInfos }) => {
                   <p>Number of outputs {transaction?.transactionOut.length}</p>
                   {transaction?.transactionOut.map((tOut, index) => (
                     <Alert key={tOut.address + index} variant={'info'}>
+                      <>{console.log(tOut)}</>
                       <p>{tOut?.value} BTC</p>
-                      <p>send to {tOut?.address}</p>
+                      <p>
+                        {parseFloat(tOut?.value) === 0
+                          ? 'Null Data Transaction'
+                          : `send to ${tOut?.scriptPubKey.address}`}
+                      </p>
                     </Alert>
                   ))}
                 </Col>
@@ -58,4 +67,4 @@ const TransactionInputAndOutputs: React.FC<Props> = ({ transactionInfos }) => {
   );
 };
 
-export default TransactionInputAndOutputs;
+export default OneTransactionDetail;

@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+export const BLOCK_HEIGHT_REGEX = /\b(\d+)\b/;
+export const BLOCK_HASH_TARGET = '0000000000';
 export const LimitPerPage: number = 5;
 export enum PaginationDesign {
   LeftDoubleArrow = '&laquo;',
@@ -58,4 +60,8 @@ export const returnPaginationRange = (
       totalPage,
     ];
   }
+};
+
+export const isObjectEmpty = (obj: Object) => {
+  return Object.keys(obj).length === 0;
 };

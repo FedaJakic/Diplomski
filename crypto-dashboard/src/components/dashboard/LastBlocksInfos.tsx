@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { DashboardUrlsApi } from '../../api/dashboard';
 import {
   calculateTimeBasedOnTimestamp,
   satoshisToBTC,
 } from '../../util/helpers';
 import { Link } from 'react-router-dom';
+import { BlockUrlsApi } from '../../api/block';
+import Loading from '../global/Loading';
 
 interface Block {
   height: string;
@@ -17,13 +18,16 @@ interface Block {
 
 const LastBlocksInfos: React.FC = () => {
   const [lastBlocks, setLastBlocks] = useState<Block[]>();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    DashboardUrlsApi.getLastBlocks()
+    setIsLoading(true);
+    BlockUrlsApi.getLastBlocks()
       .then((res) => {
         setLastBlocks(res);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -53,6 +57,7 @@ const LastBlocksInfos: React.FC = () => {
           </tr>
         </thead>
         <tbody>
+          {isLoading && <Loading />}
           {lastBlocks &&
             lastBlocks.map((block, key) => (
               <tr key={key}>

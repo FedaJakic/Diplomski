@@ -23,11 +23,51 @@ const getLatestTransactions = asyncHandler(async (req, res) => {
       };
     });
 
-    res.status(200).json({ latestTransactions });
+    res.status(200).send({ latestTransactions });
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).send({ error: 'Internal Server Error' });
   }
 });
 
-export default getLatestTransactions;
+// @desc    Get Transaction by ID
+// @route   POST /api/transactions/transaction-info
+// @access  Public
+
+const getTransactionInfo = asyncHandler(async (req, res) => {
+  try {
+    const { transactionId } = req.body;
+    const client = createBitcoinClient();
+
+    const transactionDetails = await client.getRawTransaction(
+      transactionId.toString(),
+      true
+    );
+
+    const transactionFee = await client.getRawTransaction(
+      transactionId.toString(),
+      2
+    );
+
+    const transactionHeight = await client.getBlockStats(
+      transactionDetails.blockhash
+    );
+
+    const response = {
+      transactionId: transactionDetails.txid,
+      transactionHash: transactionDetails.hash,
+      transactionHeight: transactionHeight.height,
+      transactionBlockHash: transactionDetails.blockhash,
+      transactionConfirmations: transactionDetails.confirmations,
+      transactionRecieved: transactionDetails.time,
+      transactionIn: transactionDetails.vin,
+      transactionOut: transactionDetails.vout,
+      transactionFee: transactionFee.fee,
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+});
+
+export { getLatestTransactions, getTransactionInfo };

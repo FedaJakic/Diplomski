@@ -1,6 +1,35 @@
-import { Link } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { BLOCK_HASH_TARGET, BLOCK_HEIGHT_REGEX } from '../../util/helpers';
+import { BlockUrlsApi } from '../../api/block';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  const handleSearch = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (searchValue.substring(0, 10) === BLOCK_HASH_TARGET) {
+      BlockUrlsApi.getBlockHeightByHash({ hash: searchValue })
+        .then((res) => {
+          console.log(res);
+          navigate(`/block/${res.height}`);
+        })
+        .catch((err) => console.log(err));
+    } else if (searchValue.match(BLOCK_HEIGHT_REGEX)) {
+      console.log('blockNumber');
+      navigate(`/block/${searchValue}`);
+    } else if (searchValue.length > 7) {
+      console.log('transaction');
+      navigate(`/transaction/${searchValue}`);
+    }
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
       <div className="container-fluid">
@@ -21,24 +50,9 @@ const Header = () => {
             <li className="nav-item">
               <Link className="text-decoration-none" to={'/'}>
                 <a className="nav-link">
-                  Home
+                  Lates blocks
                   <span className="visually-hidden">(current)</span>
                 </a>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="text-decoration-none" to={'/features'}>
-                <a className="nav-link">Features</a>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="text-decoration-none" to={'/features'}>
-                <a className="nav-link">Features</a>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="text-decoration-none" to={'/features'}>
-                <a className="nav-link">Features</a>
               </Link>
             </li>
           </ul>
@@ -46,9 +60,15 @@ const Header = () => {
             <input
               className="form-control me-sm-2 w-40"
               type="search"
-              placeholder="Paste Address, transaction or block"
+              placeholder="Paste Transaction, block or block hash"
+              value={searchValue}
+              onChange={handleChange}
             />
-            <button className="btn btn-secondary my-2 my-sm-0" type="submit">
+            <button
+              className="btn btn-secondary my-2 my-sm-0"
+              type="submit"
+              onClick={handleSearch}
+            >
               Search
             </button>
           </form>
