@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import block from './controllers/block.js';
 import transactions from './controllers/transactions.js';
+import wallet from './controllers/wallet.js';
 
 //For env File
 dotenv.config();
@@ -13,6 +14,7 @@ const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/wallet/', wallet);
 app.use('/api/blocks/', block);
 app.use('/api/transactions/', transactions);
 
