@@ -1,25 +1,44 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import block from './controllers/block.js';
-import transactions from './controllers/transactions.js';
+import express from 'express'
+import dotenv from 'dotenv'
+import cors from 'cors'
+import block from './controllers/block.js'
+import transactions from './controllers/transactions.js'
+import loginAndRegister from './controllers/loginAndRegister.js'
+import { testConnection, syncDatabase } from './db.js'
 
-//For env File
-dotenv.config();
+dotenv.config()
 
-const app = express();
-const port = process.env.PORT || 8000;
+const app = express()
+const port = process.env.PORT || 8000
+const enviroment = 'DEVELOPMENT'
 
-app.use(cors());
-app.use(express.json());
+app.use(cors())
+app.use(express.json())
 
-app.use('/api/blocks/', block);
-app.use('/api/transactions/', transactions);
+const startServer = async () => {
+  try {
+    await testConnection()
+
+    await syncDatabase()
+
+    app.listen(port, () => {
+      console.log(`Server is running in ${enviroment} mode on port ${port}`)
+    })
+  } catch (error) {
+    console.error('Error syncing database:', error)
+  }
+}
+
+await startServer()
+
+app.use('/api', loginAndRegister)
+app.use('/api/blocks/', block)
+app.use('/api/transactions/', transactions)
 
 app.get('/', (req, res) => {
-  res.send('Welcome to Express & TypeScript Server');
-});
+  res.send('Welcome to Express & TypeScript Server')
+})
 
-app.listen(port, () => {
-  console.log(`Server is Fire at http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server is Fire at http://localhost:${port}`)
+// })
