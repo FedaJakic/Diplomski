@@ -52,6 +52,14 @@ const Header = () => {
                 </a>
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="text-decoration-none" to={'/wallet'}>
+                <a className="nav-link">
+                  Wallet
+                  <span className="visually-hidden">(current)</span>
+                </a>
+              </Link>
+            </li>
           </ul>
           <form className="d-flex w-50">
             <input
