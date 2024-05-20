@@ -1,5 +1,5 @@
-import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import React from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
 
 const Footer: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
           <Col>
             <ul className="list-unstyled mb-0 m-2 d-flex flex-row justify-content-center align-items-center">
               <li className="mx-5" style={{ color: '#fff' }}>
-                Block Explorer
+                Diplomski rad
               </li>
               <li className="mx-5" style={{ color: '#fff' }}>
                 Feda Jakic
@@ -25,12 +25,12 @@ const Footer: React.FC = () => {
               color: '#fff',
             }}
           >
-            Copyright &copy; Kriptovalute
+            Copyright &copy; Feđa Jakić Diplomski rad
           </Col>
         </Row>
       </Container>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

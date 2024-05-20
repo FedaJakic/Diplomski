@@ -1,22 +1,56 @@
-// components/global/Sidebar.jsx
 import React from 'react'
+import styles from './sidebar.module.css'
+import SidebarMenuButtons from './buttons/sidebarMenuButtons'
+import {
+  faMagnifyingGlass,
+  faChartLine,
+  faNewspaper,
+  faMoneyBillTransfer,
+} from '@fortawesome/free-solid-svg-icons'
+import { faBitcoin, faHive } from '@fortawesome/free-brands-svg-icons'
+import { PagesURLs } from '../../util/env'
+import LoginAndRegister from './components/LoginAndRegister'
+import { isTokenExist } from '../../util/helpers/tokenHelpers'
+import UserAndSignOut from './components/UserAndSignOut'
 
 function Sidebar() {
   return (
-    <div
-      style={{
-        width: '250px',
-        minHeight: '100vh',
-        background: '#f4f4f4',
-        padding: '20px',
-      }}
-    >
-      <h3>Sidebar Content</h3>
-      <ul>
-        <li>Link 1</li>
-        <li>Link 2</li>
-        <li>Link 3</li>
-      </ul>
+    <div className={styles.mainSidebar}>
+      <div className={styles.sidebarScroll}>
+        <div className="d-flex flex-column justify-content-center alignt-items-center">
+          <SidebarMenuButtons
+            text={'Crypto search'}
+            linkTo={PagesURLs.CryptoSearch}
+            fontAwesomeIcon={faMagnifyingGlass}
+          />
+          <SidebarMenuButtons
+            text={'Graphs'}
+            linkTo={PagesURLs.Graphs}
+            fontAwesomeIcon={faChartLine}
+          />
+          <SidebarMenuButtons
+            text={'News and analysis'}
+            linkTo={PagesURLs.NewsAndAnalysis}
+            fontAwesomeIcon={faNewspaper}
+          />
+          <SidebarMenuButtons
+            text={'Conversion'}
+            linkTo={PagesURLs.Conversion}
+            fontAwesomeIcon={faMoneyBillTransfer}
+          />
+          <SidebarMenuButtons
+            text={'Bitcoin'}
+            linkTo={PagesURLs.Bitcoin}
+            fontAwesomeIcon={faBitcoin}
+          />
+          <SidebarMenuButtons
+            text={'Bitcoin blockchain'}
+            linkTo={PagesURLs.BitcoinBlockchain}
+            fontAwesomeIcon={faHive}
+          />
+        </div>
+      </div>
+      {isTokenExist() ? <UserAndSignOut /> : <LoginAndRegister />}
     </div>
   )
 }

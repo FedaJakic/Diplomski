@@ -9,6 +9,7 @@ import {
   registerFormConfig,
 } from './registerConfig'
 import { UserUrlsApi } from '../../api/user'
+import { PagesURLs } from '../../util/env'
 
 const Register: React.FC = () => {
   const { register, handleSubmit } = useForm<RegisterForm>()
@@ -84,7 +85,7 @@ const Register: React.FC = () => {
 
               <div className="form-text text-center mb-5 text-dark">
                 Have account? Go to{' '}
-                <Link to="/login" className="text-dark fw-bold">
+                <Link to={PagesURLs.Register} className="text-dark fw-bold">
                   {' '}
                   Login
                 </Link>

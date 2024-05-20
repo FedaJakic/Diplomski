@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form'
 import { LoginForm, LoginFormElements, loginFormConfig } from './loginConfig'
 import { Link } from 'react-router-dom'
 import { UserUrlsApi } from '../../api/user'
+import { PagesURLs } from '../../util/env'
+import { setToken } from '../../util/helpers/tokenHelpers'
 
 const Login: React.FC = () => {
   const { register, handleSubmit } = useForm<LoginForm>()
@@ -20,11 +22,8 @@ const Login: React.FC = () => {
 
       if (!response.success) setShowAlert(true)
       else {
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('id', response.data.id)
-        localStorage.setItem('role', response.data.role)
-        localStorage.setItem('firstName', response.data.name)
-        localStorage.setItem('lastName', response.data.surname)
+        const token = response.data.token
+        setToken(token)
         window.location.href = '/'
       }
     } catch (error) {
@@ -85,7 +84,7 @@ const Login: React.FC = () => {
 
               <div className="form-text text-center mb-5 text-dark">
                 Not Registered?{' '}
-                <Link to="/" className="text-dark fw-bold">
+                <Link to={PagesURLs.Login} className="text-dark fw-bold">
                   {' '}
                   Create an Account
                 </Link>

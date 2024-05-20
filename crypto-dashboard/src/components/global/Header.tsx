@@ -1,31 +1,31 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { BLOCK_HASH_TARGET, BLOCK_HEIGHT_REGEX } from '../../util/helpers';
-import { BlockUrlsApi } from '../../api/block';
+import { ChangeEvent, FormEvent, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { BLOCK_HASH_TARGET, BLOCK_HEIGHT_REGEX } from '../../util/helpers'
+import { BlockUrlsApi } from '../../api/block'
 
 const Header = () => {
-  const navigate = useNavigate();
-  const [searchValue, setSearchValue] = useState<string>('');
+  const navigate = useNavigate()
+  const [searchValue, setSearchValue] = useState<string>('')
 
   const handleSearch = async (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (searchValue.substring(0, 10) === BLOCK_HASH_TARGET) {
       BlockUrlsApi.getBlockHeightByHash({ hash: searchValue })
         .then((res) => {
-          navigate(`/block/${res.height}`);
+          navigate(`/block/${res.height}`)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
     } else if (searchValue.match(BLOCK_HEIGHT_REGEX)) {
-      navigate(`/block/${searchValue}`);
+      navigate(`/block/${searchValue}`)
     } else if (searchValue.length > 7) {
-      navigate(`/transaction/${searchValue}`);
+      navigate(`/transaction/${searchValue}`)
     }
-  };
+  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
+    setSearchValue(e.target.value)
+  }
 
   return (
     <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
@@ -80,6 +80,6 @@ const Header = () => {
         </div>
       </div>
     </nav>
-  );
-};
-export default Header;
+  )
+}
+export default Header
