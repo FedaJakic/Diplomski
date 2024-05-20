@@ -4,6 +4,8 @@ import cors from 'cors'
 import block from './controllers/block.js'
 import transactions from './controllers/transactions.js'
 import loginAndRegister from './controllers/loginAndRegister.js'
+import conversion from './controllers/conversion.js'
+import news from './controllers/news.js'
 import { testConnection, syncDatabase } from './db.js'
 
 dotenv.config()
@@ -32,6 +34,8 @@ const startServer = async () => {
 await startServer()
 
 app.use('/api', loginAndRegister)
+app.use('/api', conversion)
+app.use('/api', news)
 app.use('/api/blocks/', block)
 app.use('/api/transactions/', transactions)
 

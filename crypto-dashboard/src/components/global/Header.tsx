@@ -1,6 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { BLOCK_HASH_TARGET, BLOCK_HEIGHT_REGEX } from '../../util/helpers'
+import {
+  BLOCK_HASH_TARGET,
+  BLOCK_HEIGHT_REGEX,
+} from '../../util/helpers/helpers'
 import { BlockUrlsApi } from '../../api/block'
 
 const Header = () => {
@@ -47,7 +50,7 @@ const Header = () => {
             <li className="nav-item">
               <Link className="text-decoration-none" to={'/'}>
                 <a className="nav-link">
-                  Lates blocks
+                  Home
                   <span className="visually-hidden">(current)</span>
                 </a>
               </Link>

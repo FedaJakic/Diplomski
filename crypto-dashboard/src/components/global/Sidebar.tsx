@@ -9,9 +9,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faBitcoin, faHive } from '@fortawesome/free-brands-svg-icons'
 import { PagesURLs } from '../../util/env'
-import LoginAndRegister from './components/LoginAndRegister'
+import LoginAndRegister from '../login/LoginAndRegister'
 import { isTokenExist } from '../../util/helpers/tokenHelpers'
-import UserAndSignOut from './components/UserAndSignOut'
+import UserAndSignOut from '../login/UserAndSignOut'
 
 function Sidebar() {
   return (

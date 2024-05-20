@@ -11,9 +11,10 @@ import Register from './pages/LoginAndRegistration/Register'
 import { PagesURLs } from './util/env'
 import CryptoSearch from './pages/CryptoSearch/CryptoSearch'
 import Graphs from './pages/Graphs/Graphs'
-import News from './pages/News/News'
+// import News from './pages/News/News'
 import Conversion from './pages/Conversion/Conversion'
 import Bitcoin from './pages/Bitcoin/Bitcoin'
+import NewsAndAnalysis from './pages/News/News'
 
 function App() {
   return (
@@ -42,7 +43,10 @@ function App() {
             />
             <Route path={PagesURLs.CryptoSearch} element={<CryptoSearch />} />
             <Route path={PagesURLs.Graphs} element={<Graphs />} />
-            <Route path={PagesURLs.NewsAndAnalysis} element={<News />} />
+            <Route
+              path={PagesURLs.NewsAndAnalysis}
+              element={<NewsAndAnalysis />}
+            />
             <Route path={PagesURLs.Conversion} element={<Conversion />} />
             <Route path={PagesURLs.Bitcoin} element={<Bitcoin />} />
             <Route

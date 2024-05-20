@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import {
   calculateTimeBasedOnTimestamp,
   satoshisToBTC,
-} from '../../util/helpers';
-import { Link } from 'react-router-dom';
-import { BlockUrlsApi } from '../../api/block';
-import Loading from '../global/Loading';
+} from '../../util/helpers/helpers'
+import { Link } from 'react-router-dom'
+import { BlockUrlsApi } from '../../api/block'
+import Loading from '../global/Loading'
 
 interface Block {
-  height: string;
-  time: string;
-  totalSent: string;
-  totalFees: string;
-  transactions: string;
-  blockSize: string;
+  height: string
+  time: string
+  totalSent: string
+  totalFees: string
+  transactions: string
+  blockSize: string
 }
 
 const LastBlocksInfos: React.FC = () => {
-  const [lastBlocks, setLastBlocks] = useState<Block[]>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [lastBlocks, setLastBlocks] = useState<Block[]>()
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(true)
     BlockUrlsApi.getLastBlocks()
       .then((res) => {
-        setLastBlocks(res);
+        setLastBlocks(res)
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
-  }, []);
+      .finally(() => setIsLoading(false))
+  }, [])
 
   return (
     <>
@@ -80,7 +80,7 @@ const LastBlocksInfos: React.FC = () => {
         </tbody>
       </table>
     </>
-  );
-};
+  )
+}
 
-export default LastBlocksInfos;
+export default LastBlocksInfos

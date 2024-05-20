@@ -1,0 +1,35 @@
+/* src/components/news/NewsCard.module.css */
+.newsCard {
+  height: 900px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardImgContainer {
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardImg {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+}
+
+.cardBody {
+  flex: 1;
+  overflow: hidden;
+}
+
+.cardText {
+  min-height: 200px;
+  overflow-y: auto;
+  margin: 1rem 0;
+}
+
+.listGroupFlush {
+  flex-shrink: 0;
+}

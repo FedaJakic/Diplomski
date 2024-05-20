@@ -13,3 +13,26 @@ export enum PagesURLs {
   BitcoinBlockchain = '/latest-blocks',
   BlockHeight = '/block/:blockHeight',
 }
+
+export enum Currencies {
+  Euro = 'EUR',
+  Dollar = 'USD',
+  BritishPound = 'GBP',
+  SwissFrank = 'CHF',
+  NewZelandDollar = 'NZD',
+  AustralianDollar = 'AUD',
+  CanadianDollar = 'CAD',
+  SerbianDinar = 'RSD',
+}
+
+export enum Cryptocurrencies {
+  Bitcoin = 'BTC',
+  BitcoinCash = 'BCH',
+  Litecoin = 'LTC',
+  Etherum = 'ETH',
+  EtherumClassoc = 'ETC',
+  Solana = 'SOL',
+  XRP = 'XRP',
+  Dogecoin = 'DOGE',
+  Cardano = 'ADA',
+}

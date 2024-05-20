@@ -1,10 +1,10 @@
-import React from 'react';
-import { returnPaginationRange } from '../../util/helpers';
+import React from 'react'
+import { returnPaginationRange } from '../../util/helpers/helpers'
 interface Props {
-  totalPage: number;
-  page: number;
-  siblings: number;
-  onPageChange: any;
+  totalPage: number
+  page: number
+  siblings: number
+  onPageChange: any
 }
 const Pagination: React.FC<Props> = ({
   totalPage,
@@ -12,7 +12,7 @@ const Pagination: React.FC<Props> = ({
   siblings,
   onPageChange,
 }) => {
-  let transactionData = returnPaginationRange(totalPage, page, siblings);
+  let transactionData = returnPaginationRange(totalPage, page, siblings)
   return (
     <ul className="pagination d-flex align-items-center justify-content-center">
       <li className="page-item">
@@ -29,19 +29,25 @@ const Pagination: React.FC<Props> = ({
         if (transaction === page) {
           return (
             <li key={transaction} className="page-item">
-              <a className="page-link active" onClick={() => onPageChange(transaction)}>
+              <a
+                className="page-link active"
+                onClick={() => onPageChange(transaction)}
+              >
                 {transaction}
               </a>
             </li>
-          );
+          )
         } else
           return (
             <li key={transaction} className="page-item">
-              <a className="page-link" onClick={() => onPageChange(transaction)}>
+              <a
+                className="page-link"
+                onClick={() => onPageChange(transaction)}
+              >
                 {transaction}
               </a>
             </li>
-          );
+          )
       })}
       <li className="page-item">
         <a className="page-link" onClick={() => onPageChange('&rsaquo;')}>
@@ -54,6 +60,6 @@ const Pagination: React.FC<Props> = ({
         </a>
       </li>
     </ul>
-  );
-};
-export default Pagination;
+  )
+}
+export default Pagination

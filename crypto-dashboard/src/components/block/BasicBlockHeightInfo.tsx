@@ -1,22 +1,22 @@
-import React from 'react';
-import { Col, Row } from 'react-bootstrap';
-import BlockSVG from '../svg/BlockSVG';
-import TimeSVG from '../svg/TimeSVG';
-import BitcoinSVG from '../svg/BitcoinSVG';
-import FeeSVG from '../svg/FeeSVG';
-import TotalTransactionsSVG from '../svg/TotalTransactionsSVG';
+import React from 'react'
+import { Col, Row } from 'react-bootstrap'
+import BlockSVG from '../svg/BlockSVG'
+import TimeSVG from '../svg/TimeSVG'
+import BitcoinSVG from '../svg/BitcoinSVG'
+import FeeSVG from '../svg/FeeSVG'
+import TotalTransactionsSVG from '../svg/TotalTransactionsSVG'
 import {
   calculateTimeBasedOnTimestamp,
   satoshisToBTC,
-} from '../../util/helpers';
+} from '../../util/helpers/helpers'
 
 interface Props {
-  blockHeight: string;
-  blockRecieved: string;
-  totalBTCTransacted: string;
-  totalFees: string;
-  totalTransactions: string;
-  blockHash: string;
+  blockHeight: string
+  blockRecieved: string
+  totalBTCTransacted: string
+  totalFees: string
+  totalTransactions: string
+  blockHash: string
 }
 
 const BasicBlockHeightInfo: React.FC<Props> = ({
@@ -67,7 +67,7 @@ const BasicBlockHeightInfo: React.FC<Props> = ({
         </Col>
       </Row>
     </>
-  );
-};
+  )
+}
 
-export default BasicBlockHeightInfo;
+export default BasicBlockHeightInfo

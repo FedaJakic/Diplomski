@@ -1,22 +1,22 @@
-import React from 'react';
-import { Col, Row } from 'react-bootstrap';
-import BlockSVG from '../svg/BlockSVG';
-import TimeSVG from '../svg/TimeSVG';
-import BitcoinSVG from '../svg/BitcoinSVG';
-import FeeSVG from '../svg/FeeSVG';
-import TotalTransactionsSVG from '../svg/TotalTransactionsSVG';
+import React from 'react'
+import { Col, Row } from 'react-bootstrap'
+import BlockSVG from '../svg/BlockSVG'
+import TimeSVG from '../svg/TimeSVG'
+import BitcoinSVG from '../svg/BitcoinSVG'
+import FeeSVG from '../svg/FeeSVG'
+import TotalTransactionsSVG from '../svg/TotalTransactionsSVG'
 import {
   calculateTimeBasedOnTimestamp,
   satoshisToBTC,
-} from '../../util/helpers';
-import { TransactionDetails } from '../../pages/Transaction';
-import ConfirmationSVG from '../svg/CnfirmationSVG';
-import { TransactionInfo } from '../../util/transaction/types';
-import { sumTotalValue } from '../../util/transaction/helpers';
+} from '../../util/helpers/helpers'
+import { TransactionDetails } from '../../pages/Transaction'
+import ConfirmationSVG from '../svg/CnfirmationSVG'
+import { TransactionInfo } from '../../util/transaction/types'
+import { sumTotalValue } from '../../util/transaction/helpers'
 
 interface Props {
-  transactionInfo: TransactionDetails;
-  transactionInputsAndOutputs: TransactionInfo;
+  transactionInfo: TransactionDetails
+  transactionInputsAndOutputs: TransactionInfo
 }
 
 const TransactionInformations: React.FC<Props> = ({
@@ -71,7 +71,7 @@ const TransactionInformations: React.FC<Props> = ({
         </Col>
       </Row>
     </>
-  );
-};
+  )
+}
 
-export default TransactionInformations;
+export default TransactionInformations

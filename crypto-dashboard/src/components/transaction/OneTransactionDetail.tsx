@@ -1,12 +1,12 @@
-import React from 'react';
-import { Alert, Col, ListGroup, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { TransactionInfo, TransactionOut } from '../../util/transaction/types';
-import { sumTotalValue } from '../../util/transaction/helpers';
-import { isObjectEmpty } from '../../util/helpers';
+import React from 'react'
+import { Alert, Col, ListGroup, Row } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { TransactionInfo, TransactionOut } from '../../util/transaction/types'
+import { sumTotalValue } from '../../util/transaction/helpers'
+import { isObjectEmpty } from '../../util/helpers/helpers'
 
 interface Props {
-  transactionInfos: any[] | undefined;
+  transactionInfos: any[] | undefined
 }
 
 const OneTransactionDetail: React.FC<Props> = ({ transactionInfos }) => {
@@ -63,7 +63,7 @@ const OneTransactionDetail: React.FC<Props> = ({ transactionInfos }) => {
           </ListGroup>
         ))}
     </>
-  );
-};
+  )
+}
 
-export default OneTransactionDetail;
+export default OneTransactionDetail

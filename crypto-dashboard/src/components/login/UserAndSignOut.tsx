@@ -1,5 +1,5 @@
 import React from 'react'
-import SignOutButton from '../buttons/signoutButton'
+import SignOutButton from '../global/buttons/signoutButton'
 import styles from './userAndSignOut.module.css'
 
 const UserAndSignOut = () => {

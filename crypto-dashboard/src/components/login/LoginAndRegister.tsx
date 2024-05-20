@@ -1,6 +1,6 @@
 import React from 'react'
-import ArrowButtonWithBorder from '../buttons/ArrowButtonWithBorder'
-import ArrowButton from '../buttons/ArrowButton'
+import ArrowButtonWithBorder from '../global/buttons/ArrowButtonWithBorder'
+import ArrowButton from '../global/buttons/ArrowButton'
 
 const LoginAndRegister = () => {
   return (
