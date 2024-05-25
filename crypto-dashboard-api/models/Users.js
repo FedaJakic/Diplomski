@@ -10,6 +10,10 @@ export const User = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     first_name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -37,6 +41,10 @@ export const User = sequelize.define(
         model: Role,
         key: 'id',
       },
+    },
+    profile_picture: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     created: {
       allowNull: false,

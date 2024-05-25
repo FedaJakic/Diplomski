@@ -1,4 +1,5 @@
 export enum RegisterFormElements {
+  username = 'username',
   name = 'name',
   surname = 'surname',
   email = 'email',
@@ -7,6 +8,7 @@ export enum RegisterFormElements {
 }
 
 export interface RegisterForm {
+  [RegisterFormElements.username]: string
   [RegisterFormElements.name]: string
   [RegisterFormElements.surname]: string
   [RegisterFormElements.email]: string
@@ -24,6 +26,12 @@ export interface RegisterFormElement {
 export const registerFormConfig: {
   [key in RegisterFormElements]: RegisterFormElement
 } = {
+  [RegisterFormElements.username]: {
+    label: 'Username',
+    placeholder: 'Username',
+    type: 'text',
+    required: true,
+  },
   [RegisterFormElements.name]: {
     label: 'First name',
     placeholder: 'First name',

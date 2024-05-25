@@ -15,7 +15,7 @@ const router = express.Router()
 router.post(
   '/register',
   asyncHandler(async (req, res, next) => {
-    const { name, surname, email, password, date_of_birth } = req.body
+    const { username, name, surname, email, password, date_of_birth } = req.body
     const role = 1
 
     try {
@@ -23,6 +23,7 @@ router.post(
       const hashedPassword = await bcrypt.hash(password, salt)
 
       await User.create({
+        username: username,
         first_name: name,
         last_name: surname,
         email: email,
@@ -53,7 +54,7 @@ router.post(
         {
           id: user.id,
           email: user.email,
-          role: user.role,
+          role: user.role_id,
         },
         SECRET_KEY,
         { expiresIn: '3h' }
@@ -74,6 +75,97 @@ router.post(
     } else {
       res.status(401).send({ success: false })
       throw new Error('Invalid email or password')
+    }
+  })
+)
+
+router.post(
+  '/userProfile',
+  asyncHandler(async (req, res) => {
+    try {
+      const { userId } = req.body
+      const userProfile = await User.findOne({
+        where: {
+          id: userId,
+        },
+      })
+      res.status(200).send(userProfile)
+    } catch (error) {
+      res.status(500).json({ error: error.message })
+    }
+  })
+)
+
+// @desc    Update user by ID
+// @route   PUT /api/users/userProfile/:userId
+// @access  Public
+router.put(
+  '/userProfile',
+  asyncHandler(async (req, res) => {
+    const { userId } = req.body
+    try {
+      const [updatedRows, updatedInstance] = await User.update(req.body, {
+        where: { id: userId },
+        returning: true,
+      })
+      if (!updatedRows) {
+        throw new Error('Nothing updated!')
+      }
+      res.status(200).send({
+        message: 'Successfully updated user!',
+        data: updatedInstance,
+        success: true,
+      })
+    } catch (error) {
+      res.status(500).send({ error: error.message })
+    }
+  })
+)
+
+// @desc    Update Profile Picture by ID
+// @route   PUT /api/profilePicture
+// @access  Public
+router.put(
+  '/profilePicture',
+  asyncHandler(async (req, res) => {
+    const { userId } = req.body
+    try {
+      res.status(200).send({
+        message: 'Successfully updated user!',
+        success: true,
+      })
+    } catch (error) {
+      res.status(500).send({ error: error.message })
+    }
+  })
+)
+
+// @desc    Delete user by ID
+// @route   PUT /api/users/userProfile/:userId
+// @access  Public
+router.delete(
+  '/delete',
+  asyncHandler(async (req, res) => {
+    const { userId } = req.body
+    try {
+      await Review.destroy({
+        where: { user_id_fk: req.params.id },
+      })
+
+      const deletedRow = await User.destroy({
+        where: { id: parseInt(req.params.id) },
+      })
+
+      res.status(200).json({
+        success: true,
+        message: 'User uspješno obrisana.',
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Greška prilikom brisanja usera.',
+        error: error.message,
+      })
     }
   })
 )

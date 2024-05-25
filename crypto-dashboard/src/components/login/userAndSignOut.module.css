@@ -13,6 +13,10 @@
   transition: all 0.3s ease;
 }
 
+.cardClient:hover {
+  transform: scale(1.05);
+}
+
 .userPicture {
   overflow: hidden;
   object-fit: cover;

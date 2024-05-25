@@ -11,10 +11,10 @@ import Register from './pages/LoginAndRegistration/Register'
 import { PagesURLs } from './util/env'
 import CryptoSearch from './pages/CryptoSearch/CryptoSearch'
 import Graphs from './pages/Graphs/Graphs'
-// import News from './pages/News/News'
 import Conversion from './pages/Conversion/Conversion'
 import Bitcoin from './pages/Bitcoin/Bitcoin'
 import NewsAndAnalysis from './pages/News/News'
+import AccountDetails from './pages/AccountDetails/AccountDetails'
 
 function App() {
   return (
@@ -53,6 +53,7 @@ function App() {
               path="/transaction/:transactionId"
               element={<Transaction />}
             />
+            <Route path="/account-details/" element={<AccountDetails />} />
           </Routes>
         </main>
       </div>

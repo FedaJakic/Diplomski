@@ -18,6 +18,7 @@ const Register: React.FC = () => {
   const submitHandler = async (data: RegisterForm): Promise<void> => {
     try {
       const response = await UserUrlsApi.registerUser({
+        username: data.username,
         name: data.name,
         surname: data.surname,
         email: data.email,

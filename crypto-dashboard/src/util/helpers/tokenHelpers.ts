@@ -1,7 +1,13 @@
-import { jwtDecode } from 'jwt-decode'
+import { jwtDecode, JwtPayload } from 'jwt-decode'
 
-export const tokenDecode = (token: string) => {
-  const decodedToken = jwtDecode(token)
+export interface CustomJwtPayload extends JwtPayload {
+  id: string
+  email: string
+  role: string
+}
+
+export const tokenDecode = (token: string): CustomJwtPayload => {
+  const decodedToken = jwtDecode<CustomJwtPayload>(token)
   return decodedToken
 }
 
