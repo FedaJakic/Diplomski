@@ -1,12 +1,12 @@
 import React from 'react'
 import styles from './signOutButton.module.css'
-import { Link } from 'react-router-dom'
-import { removeToken } from '../../../util/helpers/tokenHelpers'
+import { removeRole, removeToken } from '../../../util/helpers/tokenHelpers'
 import { PagesURLs } from '../../../util/env'
 
 const SignOutButton: React.FC = () => {
   const handleSignOut = () => {
     removeToken()
+    removeRole()
     window.location.href = PagesURLs.Login
   }
 

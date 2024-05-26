@@ -5,6 +5,7 @@ import {
   BLOCK_HEIGHT_REGEX,
 } from '../../util/helpers/helpers'
 import { BlockUrlsApi } from '../../api/block'
+import { PagesURLs, Role } from '../../util/env'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -48,21 +49,28 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <Link className="text-decoration-none" to={'/'}>
-                <a className="nav-link">
-                  Home
-                  <span className="visually-hidden">(current)</span>
-                </a>
+              <Link className="text-decoration-none nav-link" to={'/'}>
+                Home
+                <span className="visually-hidden">(current)</span>
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="text-decoration-none" to={'/wallet'}>
-                <a className="nav-link">
-                  Wallet
-                  <span className="visually-hidden">(current)</span>
-                </a>
+              <Link className="text-decoration-none nav-link" to={'/wallet'}>
+                Wallet
+                <span className="visually-hidden">(current)</span>
               </Link>
             </li>
+            {localStorage.getItem('role') === Role.Admin && (
+              <li className="nav-item">
+                <Link
+                  className="text-decoration-none nav-link"
+                  to={PagesURLs.ListUser}
+                >
+                  Users
+                  <span className="visually-hidden">(current)</span>
+                </Link>
+              </li>
+            )}
           </ul>
           <form className="d-flex w-50">
             <input

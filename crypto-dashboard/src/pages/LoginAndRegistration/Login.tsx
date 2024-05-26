@@ -6,7 +6,7 @@ import { LoginForm, LoginFormElements, loginFormConfig } from './loginConfig'
 import { Link } from 'react-router-dom'
 import { UserUrlsApi } from '../../api/user'
 import { PagesURLs } from '../../util/env'
-import { setToken } from '../../util/helpers/tokenHelpers'
+import { setRole, setToken, tokenDecode } from '../../util/helpers/tokenHelpers'
 
 const Login: React.FC = () => {
   const { register, handleSubmit } = useForm<LoginForm>()
@@ -24,6 +24,8 @@ const Login: React.FC = () => {
       else {
         const token = response.data.token
         setToken(token)
+        const decodedToken = tokenDecode(token)
+        setRole(decodedToken.role)
         window.location.href = '/'
       }
     } catch (error) {

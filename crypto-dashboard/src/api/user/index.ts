@@ -7,6 +7,9 @@ const UserUrls = {
   postLoginUser: `${API_URL.api_url}/api/login`,
   getAccountDetails: `${API_URL.api_url}/api/userProfile`,
   updateAccountDetails: `${API_URL.api_url}/api/userProfile`,
+  allUsers: `${API_URL.api_url}/api/all-users`,
+  deleteUser: `${API_URL.api_url}/api/delete-users`,
+  updateProfilePicture: `${API_URL.api_url}/api/profilePicture`,
 }
 
 export const UserUrlsApi = {
@@ -76,6 +79,21 @@ export const UserUrlsApi = {
         name,
         surname,
         date_of_birth,
+      })
+      .then((res) => res.data),
+
+  getAllUsers: async () =>
+    axiosClient.get(UserUrls.allUsers).then((res) => res.data),
+
+  deleteUser: async ({ userId }: { userId: string }) =>
+    axiosClient.post(UserUrls.deleteUser, { userId }).then((res) => res.data),
+
+  updateProfilePicture: async (formData: FormData) =>
+    axiosClient
+      .put(UserUrls.updateProfilePicture, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       })
       .then((res) => res.data),
 }

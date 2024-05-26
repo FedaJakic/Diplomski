@@ -5,9 +5,12 @@ import { User } from '../../util/pages/userProfile/types'
 import { UserUrlsApi } from '../../api/user'
 import Loading from '../../components/global/Loading'
 import InfoModal from '../../components/global/InfoModal'
+import UploadModal from '../../components/global/UploadModal'
+import { useParams } from 'react-router-dom'
 
 const AccountDetails: React.FC = () => {
   const token = localStorage.getItem('token')
+  const { userId } = useParams<{ userId: string }>()
   const [userProfile, setUserProfile] = useState<User>({
     id: 0,
     username: '',
@@ -23,13 +26,13 @@ const AccountDetails: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isAlert, setAlert] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [showUploadModal, setShowUploadModal] = useState<boolean>(false)
 
   const fetchUserProfile = async () => {
     try {
-      if (token) {
-        const decodedToken = tokenDecode(token)
+      if (userId && token) {
         const userInformation = await UserUrlsApi.getUserAccountDetails({
-          userId: decodedToken.id,
+          userId,
         })
 
         setUserProfile(userInformation)
@@ -77,6 +80,30 @@ const AccountDetails: React.FC = () => {
     }))
   }
 
+  const handleUpload = async (file: File | null) => {
+    if (token && file) {
+      try {
+        const formData = new FormData()
+        formData.append('profile_picture', file)
+        formData.append('userId', String(userProfile.id))
+        formData.append('username', userProfile.username)
+
+        const data = await UserUrlsApi.updateProfilePicture(formData)
+
+        if (data.success) {
+          setUserProfile((prevProfile) => ({
+            ...prevProfile,
+            profile_picture: data.profilePicturePath,
+          }))
+        } else {
+          console.error('Failed to upload the profile picture')
+        }
+      } catch (error) {
+        console.error('Error uploading profile picture:', error)
+      }
+    }
+  }
+
   const handleCloseModal = async () => {
     fetchUserProfile()
     setShowModal(false)
@@ -94,13 +121,20 @@ const AccountDetails: React.FC = () => {
               <div className="card-body text-center">
                 <img
                   className="img-account-profile rounded-circle mb-2"
-                  src="http://bootdey.com/img/Content/avatar/avatar1.png"
+                  src={
+                    userProfile.profile_picture ||
+                    'http://bootdey.com/img/Content/avatar/avatar1.png'
+                  }
                   alt=""
                 />
                 <div className="small font-italic text-muted mb-4">
                   JPG or PNG no larger than 5 MB
                 </div>
-                <Button className="btn btn-primary" type="button">
+                <Button
+                  className="btn btn-primary"
+                  type="button"
+                  onClick={() => setShowUploadModal(true)}
+                >
                   Upload new image
                 </Button>
               </div>
@@ -208,6 +242,12 @@ const AccountDetails: React.FC = () => {
           onHide={handleCloseModal}
           title="Success"
           body="Your profile has been successfully updated."
+        />
+        <UploadModal
+          title="Upload Profile Picture"
+          show={showUploadModal}
+          onHide={() => setShowUploadModal(false)}
+          onUpload={handleUpload}
         />
       </div>
     )

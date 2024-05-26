@@ -1,4 +1,5 @@
 import React from 'react'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 import { Route, Routes } from 'react-router-dom'
 import MainDashboard from './pages/Blockchain/MainDashboard'
 import BlockInformation from './pages/BlockInformation'
@@ -15,6 +16,7 @@ import Conversion from './pages/Conversion/Conversion'
 import Bitcoin from './pages/Bitcoin/Bitcoin'
 import NewsAndAnalysis from './pages/News/News'
 import AccountDetails from './pages/AccountDetails/AccountDetails'
+import ListUser from './pages/ListUser/ListUser'
 
 function App() {
   return (
@@ -53,7 +55,8 @@ function App() {
               path="/transaction/:transactionId"
               element={<Transaction />}
             />
-            <Route path="/account-details/" element={<AccountDetails />} />
+            <Route path="/account-details/:userId" element={<AccountDetails />} />
+            <Route path={PagesURLs.ListUser} element={<ListUser />} />
           </Routes>
         </main>
       </div>

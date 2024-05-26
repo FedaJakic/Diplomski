@@ -6,6 +6,7 @@ import { User } from '../models/Users.js'
 import { verifyToken } from '../utils/authentication/authHelpers.js'
 import { config } from 'dotenv'
 import { matchPassword } from '../utils/authentication/auth.js'
+import upload from '../config/multerConfig.js'
 
 config()
 const SECRET_KEY = process.env.SECRET_KEY
@@ -79,6 +80,22 @@ router.post(
   })
 )
 
+router.get(
+  '/all-users',
+  asyncHandler(async (req, res) => {
+    try {
+      const users = await User.findAll()
+      res.status(200).json({
+        message: 'Successfully retrieved users!',
+        data: users,
+        success: true,
+      })
+    } catch (error) {
+      res.status(500).json({ error: error.message })
+    }
+  })
+)
+
 router.post(
   '/userProfile',
   asyncHandler(async (req, res) => {
@@ -122,17 +139,34 @@ router.put(
   })
 )
 
-// @desc    Update Profile Picture by ID
-// @route   PUT /api/profilePicture
-// @access  Public
 router.put(
   '/profilePicture',
+  upload.single('profile_picture'),
   asyncHandler(async (req, res) => {
-    const { userId } = req.body
+    const { userId, username } = req.body
+
+    console.log('---------------------------------')
+    console.log('Request body:', req.body)
+    console.log('Uploaded file:', req.file)
+    console.log('---------------------------------')
+
+    if (!req.file) {
+      return res.status(400).send({ error: 'File upload failed' })
+    }
+
+    const profilePicturePath = `/profilePictures/${username}/${req.file.filename}`
+
     try {
+      // Update the user's profile picture URL in the database
+      await User.update(
+        { profile_picture: profilePicturePath },
+        { where: { id: userId } }
+      )
+
       res.status(200).send({
         message: 'Successfully updated user!',
         success: true,
+        profilePicturePath,
       })
     } catch (error) {
       res.status(500).send({ error: error.message })

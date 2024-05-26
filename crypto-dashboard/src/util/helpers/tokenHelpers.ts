@@ -22,3 +22,11 @@ export const setToken = (token: string): void => {
 export const removeToken = (): void => {
   localStorage.removeItem('token')
 }
+
+export const setRole = (role: string): void => {
+  localStorage.setItem('role', role)
+}
+
+export const removeRole = (): void => {
+  localStorage.removeItem('role')
+}

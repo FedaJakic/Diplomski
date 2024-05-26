@@ -8,6 +8,7 @@ import { UserUrlsApi } from '../../api/user'
 const UserAndSignOut = () => {
   const token = localStorage.getItem('token')
   const [username, setUsername] = useState<string>('')
+  const [userId, setUserId] = useState<string>('')
   const [role, setRole] = useState<string>('')
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const UserAndSignOut = () => {
 
           setUsername(userInformation.username)
           setRole(userInformation.role_id)
+          setUserId(String(userInformation.id))
         }
       } catch (error) {
         console.log(error)
@@ -33,7 +35,7 @@ const UserAndSignOut = () => {
     <div>
       <hr style={{ margin: '20px 0' }} />
       <Link
-        to={'/account-details'}
+        to={`/account-details/${userId}`}
         className="d-flex flex-column justify-content-center align-items-center"
       >
         <div className={styles.cardClient}>
