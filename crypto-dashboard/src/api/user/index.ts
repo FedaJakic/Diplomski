@@ -8,7 +8,7 @@ const UserUrls = {
   getAccountDetails: `${API_URL.api_url}/api/userProfile`,
   updateAccountDetails: `${API_URL.api_url}/api/userProfile`,
   allUsers: `${API_URL.api_url}/api/all-users`,
-  deleteUser: `${API_URL.api_url}/api/delete-users`,
+  deleteUser: `${API_URL.api_url}/api/delete`,
   updateProfilePicture: `${API_URL.api_url}/api/profilePicture`,
 }
 

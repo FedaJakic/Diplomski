@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Alert, Button } from 'react-bootstrap'
 import { tokenDecode } from '../../util/helpers/tokenHelpers'
 import { User } from '../../util/pages/userProfile/types'
 import { UserUrlsApi } from '../../api/user'
@@ -114,6 +114,11 @@ const AccountDetails: React.FC = () => {
     return (
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4" />
+        {isAlert && (
+          <Alert key={'danger'} variant={'danger'}>
+            Error while saving changes!
+          </Alert>
+        )}
         <div className="row">
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">

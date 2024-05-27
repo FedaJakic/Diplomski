@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import './listUser.moudle.css'
 import { User } from '../../util/pages/userProfile/types'
 import { UserUrlsApi } from '../../api/user'
-import { all } from 'axios'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { Role } from '../../util/env'
@@ -12,18 +11,17 @@ const ListUser = () => {
   const [users, setUsers] = useState<User[]>()
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
-  useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const allUsers = await UserUrlsApi.getAllUsers()
-        console.log(allUsers.data)
-        if (allUsers.success) {
-          setUsers(allUsers.data)
-        }
-        setIsLoading(false)
-      } catch (error) {}
-    }
+  const fetchAllUsers = async () => {
+    try {
+      const allUsers = await UserUrlsApi.getAllUsers()
+      if (allUsers.success) {
+        setUsers(allUsers.data)
+      }
+      setIsLoading(false)
+    } catch (error) {}
+  }
 
+  useEffect(() => {
     fetchAllUsers()
   }, [])
 
@@ -32,7 +30,7 @@ const ListUser = () => {
       const deletedRows = await UserUrlsApi.deleteUser({ userId })
 
       if (deletedRows.success) {
-        console.log('userDeleted')
+        fetchAllUsers()
       }
     } catch (error) {
       console.log(error)
@@ -76,9 +74,9 @@ const ListUser = () => {
                                   src="https://bootdey.com/img/Content/user_1.jpg"
                                   alt=""
                                 />
-                                <a href="#" className="user-link">
+                                <span className="text-primary user-link">
                                   {user.first_name} {user.last_name}
-                                </a>
+                                </span>
                                 <span className="user-subhead">
                                   {String(user.role_id) === Role.Member
                                     ? 'Member'
@@ -101,9 +99,9 @@ const ListUser = () => {
                                 </span>
                               </td>
                               <td>
-                                <a className="text-decoration-none">
+                                <span className="text-primary text-decoration-none">
                                   {user.email}
-                                </a>
+                                </span>
                               </td>
                               <td style={{ width: '20%' }}>
                                 <Button variant="primary" className="mx-1">

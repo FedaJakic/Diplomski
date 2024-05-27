@@ -177,17 +177,13 @@ router.put(
 // @desc    Delete user by ID
 // @route   PUT /api/users/userProfile/:userId
 // @access  Public
-router.delete(
+router.post(
   '/delete',
   asyncHandler(async (req, res) => {
     const { userId } = req.body
     try {
-      await Review.destroy({
-        where: { user_id_fk: req.params.id },
-      })
-
       const deletedRow = await User.destroy({
-        where: { id: parseInt(req.params.id) },
+        where: { id: userId },
       })
 
       res.status(200).json({
