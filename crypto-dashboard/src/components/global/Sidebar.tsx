@@ -24,11 +24,6 @@ function Sidebar() {
             fontAwesomeIcon={faMagnifyingGlass}
           />
           <SidebarMenuButtons
-            text={'Graphs'}
-            linkTo={PagesURLs.Graphs}
-            fontAwesomeIcon={faChartLine}
-          />
-          <SidebarMenuButtons
             text={'News and analysis'}
             linkTo={PagesURLs.NewsAndAnalysis}
             fontAwesomeIcon={faNewspaper}

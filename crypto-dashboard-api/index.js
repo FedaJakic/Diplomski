@@ -6,6 +6,7 @@ import transactions from './controllers/transactions.js'
 import loginAndRegister from './controllers/loginAndRegister.js'
 import conversion from './controllers/conversion.js'
 import news from './controllers/news.js'
+import cryptoInfo from './controllers/cryptoInfo.js'
 import { testConnection, syncDatabase } from './db.js'
 
 dotenv.config()
@@ -38,6 +39,7 @@ app.use('/api', conversion)
 app.use('/api', news)
 app.use('/api/blocks/', block)
 app.use('/api/transactions/', transactions)
+app.use('/api/crypto-info/', cryptoInfo)
 
 app.get('/', (req, res) => {
   res.send('Welcome to Express & TypeScript Server')

@@ -10,13 +10,12 @@ import Sidebar from './components/global/Sidebar'
 import Login from './pages/LoginAndRegistration/Login'
 import Register from './pages/LoginAndRegistration/Register'
 import { PagesURLs } from './util/env'
-import CryptoSearch from './pages/CryptoSearch/CryptoSearch'
-import Graphs from './pages/Graphs/Graphs'
 import Conversion from './pages/Conversion/Conversion'
 import Bitcoin from './pages/Bitcoin/Bitcoin'
 import NewsAndAnalysis from './pages/News/News'
 import AccountDetails from './pages/AccountDetails/AccountDetails'
 import ListUser from './pages/ListUser/ListUser'
+import CryptoSearchAndGraphs from './pages/CryptoSearchAndGraphs/CryptoSearchAndGraphs'
 
 function App() {
   return (
@@ -43,8 +42,10 @@ function App() {
               path={PagesURLs.BitcoinBlockchain}
               element={<MainDashboard />}
             />
-            <Route path={PagesURLs.CryptoSearch} element={<CryptoSearch />} />
-            <Route path={PagesURLs.Graphs} element={<Graphs />} />
+            <Route
+              path={PagesURLs.CryptoSearch}
+              element={<CryptoSearchAndGraphs />}
+            />
             <Route
               path={PagesURLs.NewsAndAnalysis}
               element={<NewsAndAnalysis />}
@@ -55,7 +56,10 @@ function App() {
               path="/transaction/:transactionId"
               element={<Transaction />}
             />
-            <Route path="/account-details/:userId" element={<AccountDetails />} />
+            <Route
+              path="/account-details/:userId"
+              element={<AccountDetails />}
+            />
             <Route path={PagesURLs.ListUser} element={<ListUser />} />
           </Routes>
         </main>
