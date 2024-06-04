@@ -1,7 +1,16 @@
-import Spinner from 'react-bootstrap/Spinner';
+import React from 'react'
+import { Spinner } from 'react-bootstrap'
+// import './loading.module.css'
 
 const Loading = () => {
-  return <Spinner animation="grow" />;
-};
+  return (
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: 'calc(100vh - 131px)' }}
+    >
+      <Spinner animation="grow" variant="primary" />
+    </div>
+  )
+}
 
-export default Loading;
+export default Loading

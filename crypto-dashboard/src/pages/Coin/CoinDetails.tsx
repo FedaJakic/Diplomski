@@ -5,6 +5,7 @@ import DeltaChart from '../../components/bitcoin/DeltaChart'
 import BigGraph from '../../components/graph/BigGraph'
 import { GraphHistory } from '../../util/pages/graphsAndInfos/types'
 import { formatLargeNumber } from '../../util/pages/graphsAndInfos/helpers'
+import { useParams } from 'react-router-dom'
 
 interface Delta {
   hour: number
@@ -19,7 +20,7 @@ interface Links {
   [key: string]: string | null
 }
 
-interface BitcoinData {
+interface CoinData {
   name: string
   symbol: string
   rank: number
@@ -41,8 +42,9 @@ interface BitcoinData {
   delta: Delta
 }
 
-const Bitcoin: React.FC = () => {
-  const [bitcoinData, setBitcoinData] = useState<BitcoinData | null>(null)
+const CoinDetails: React.FC = () => {
+  const { code } = useParams()
+  const [bitcoinData, setBitcoinData] = useState<CoinData | null>(null)
   const [history, setHistory] = useState<GraphHistory[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -51,15 +53,17 @@ const Bitcoin: React.FC = () => {
       try {
         const response = await GraphsAndInfosApi.getCodeInfo({
           currency: 'EUR',
-          code: 'BTC',
+          code: code?.toUpperCase() || 'BTC',
         })
         setBitcoinData(response)
 
         const response2 = await GraphsAndInfosApi.getSingleHistory({
           currency: 'EUR',
-          code: 'BTC',
+          code: code?.toUpperCase() || 'BTC',
         })
         setHistory(response2)
+
+        console.log(response)
 
         setIsLoading(false)
       } catch (error) {
@@ -104,7 +108,7 @@ const Bitcoin: React.FC = () => {
               <h5 className="card-title">
                 <i className="bi bi-currency-dollar"></i> Rate
               </h5>
-              <p className="card-text">${bitcoinData.rate.toLocaleString()}</p>
+              <p className="card-text">${bitcoinData.rate.toFixed(2)}</p>
             </div>
           </div>
         </div>
@@ -149,7 +153,7 @@ const Bitcoin: React.FC = () => {
                 <i className="bi bi-wallet2"></i> Circulating Supply
               </h5>
               <p className="card-text">
-                {bitcoinData.circulatingSupply.toLocaleString()}
+                {formatLargeNumber(bitcoinData.circulatingSupply)}
               </p>
             </div>
           </div>
@@ -161,7 +165,7 @@ const Bitcoin: React.FC = () => {
                 <i className="bi bi-box-seam"></i> Total Supply
               </h5>
               <p className="card-text">
-                {bitcoinData.totalSupply.toLocaleString()}
+                {formatLargeNumber(bitcoinData.totalSupply)}
               </p>
             </div>
           </div>
@@ -173,7 +177,9 @@ const Bitcoin: React.FC = () => {
                 <i className="bi bi-trophy"></i> Max Supply
               </h5>
               <p className="card-text">
-                {bitcoinData.maxSupply.toLocaleString()}
+                {bitcoinData.maxSupply
+                  ? formatLargeNumber(bitcoinData.maxSupply)
+                  : 'N/A'}
               </p>
             </div>
           </div>
@@ -214,4 +220,4 @@ const Bitcoin: React.FC = () => {
   )
 }
 
-export default Bitcoin
+export default CoinDetails

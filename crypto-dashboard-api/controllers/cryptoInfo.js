@@ -3,22 +3,96 @@ import asyncHandler from 'express-async-handler'
 import { EXTERNAL_URL } from '../utils/constants.js'
 import { config } from 'dotenv'
 import { CryptoCache } from '../models/CryptoCache.js'
-import {
-  getCurrentAndPastTimestamps,
-  fetchHistoryForCrypto,
-} from '../utils/cryptoInfo/helpers.js'
+import { fetchHistoryForCryptoOneWeek } from '../utils/cryptoInfo/helpers.js'
 
 config()
 const API_KEY = process.env.LIVECOINWATCH_API
 const router = express.Router()
 
 router.post(
+  '/',
+  asyncHandler(async (req, res, next) => {
+    const { currency, code } = req.body
+
+    console.log(currency, code)
+    try {
+      const singleCoinResponse = await fetch(
+        'https://api.livecoinwatch.com/coins/single',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': `${API_KEY}`,
+          },
+          body: JSON.stringify({
+            currency: currency,
+            code: code,
+            meta: true,
+          }),
+        }
+      )
+
+      if (!singleCoinResponse.ok) {
+        throw new Error('Failed to fetch list data from the external API')
+      }
+
+      const response = await singleCoinResponse.json()
+
+      res.status(200).send(response)
+    } catch (err) {
+      console.error(err)
+      const error = new Error(err.message)
+      return next(error)
+    }
+  })
+)
+
+router.post(
+  '/single-history',
+  asyncHandler(async (req, res, next) => {
+    const { currency, code } = req.body
+    try {
+      const history = await fetchHistoryForCryptoOneWeek(code)
+
+      res.status(200).send(history)
+    } catch (err) {
+      console.error(err)
+      const error = new Error(err.message)
+      return next(error)
+    }
+  })
+)
+
+router.post(
   '/all',
   asyncHandler(async (req, res, next) => {
     try {
-      const result = await CryptoCache.findAll()
+      const {
+        page = 1,
+        limit = 10,
+        sortField = 'rank',
+        sortOrder = 'asc',
+      } = req.body
 
-      res.status(200).send(result)
+      // Calculate the offset
+      const offset = (page - 1) * limit
+
+      // Find the total number of records
+      const totalRecords = await CryptoCache.count()
+
+      // Fetch paginated and sorted data
+      const result = await CryptoCache.findAll({
+        offset: offset,
+        limit: parseInt(limit),
+        order: [[sortField, sortOrder]],
+      })
+
+      res.status(200).send({
+        data: result,
+        totalRecords: totalRecords,
+        currentPage: parseInt(page),
+        totalPages: Math.ceil(totalRecords / limit),
+      })
     } catch (err) {
       console.error(err)
       const error = new Error(err.message)
@@ -63,7 +137,7 @@ router.post(
       )
 
       const cryptoDataPromises = mainList.map(async (crypto) => {
-        const history = await fetchHistoryForCrypto(crypto.code)
+        const history = await fetchHistoryForCryptoOneWeek(crypto.code)
         return {
           name: crypto.name,
           code: crypto.code,

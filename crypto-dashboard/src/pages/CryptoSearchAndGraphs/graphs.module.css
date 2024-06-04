@@ -1,3 +1,13 @@
+:local {
+  .table tbody tr:hover {
+    background-color: #ee4242; /* Change this to your preferred hover color */
+  }
+
+  .rowHover:hover {
+    background-color: #c05050; /* Change this to your preferred hover color */
+  }
+}
+
 .widget-26 {
   color: #3c4142;
   font-weight: 400;
@@ -220,6 +230,10 @@
   select
   option {
   color: #3c4142;
+}
+
+.rowHover:hover {
+  background-color: #c05050; /* You can change this color to whatever you prefer */
 }
 
 @media (min-width: 768px) and (max-width: 991.98px) {

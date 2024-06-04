@@ -16,6 +16,7 @@ import NewsAndAnalysis from './pages/News/News'
 import AccountDetails from './pages/AccountDetails/AccountDetails'
 import ListUser from './pages/ListUser/ListUser'
 import CryptoSearchAndGraphs from './pages/CryptoSearchAndGraphs/CryptoSearchAndGraphs'
+import CoinDetails from './pages/Coin/CoinDetails'
 
 function App() {
   return (
@@ -45,6 +46,10 @@ function App() {
             <Route
               path={PagesURLs.CryptoSearch}
               element={<CryptoSearchAndGraphs />}
+            />
+            <Route
+              path={`${PagesURLs.CryptoSearch}/:code`}
+              element={<CoinDetails />}
             />
             <Route
               path={PagesURLs.NewsAndAnalysis}

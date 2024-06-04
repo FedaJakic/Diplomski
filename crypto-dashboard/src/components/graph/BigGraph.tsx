@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Chart, ChartData, ChartOptions, registerables } from 'chart.js'
 import 'chartjs-adapter-date-fns'
 import { Line } from 'react-chartjs-2'
@@ -11,7 +11,7 @@ interface Props {
   historyData: GraphHistory[]
 }
 
-const SmallGraph: React.FC<Props> = ({ historyData }) => {
+const BigGraph: React.FC<Props> = ({ historyData }) => {
   const [data, setData] = useState<{ date: number; rate: number }[]>([])
 
   useEffect(() => {
@@ -47,38 +47,47 @@ const SmallGraph: React.FC<Props> = ({ historyData }) => {
       x: {
         type: 'time',
         time: {
-          unit: 'minute',
+          unit: 'day', // Change unit to 'day' for better readability
+          displayFormats: {
+            day: 'MMM d', // Format for displaying date
+          },
         },
-        display: false,
+        title: {
+          display: true,
+          text: 'Date',
+        },
       },
       y: {
         beginAtZero: false,
-        display: false,
+        title: {
+          display: true,
+          text: 'Price (EUR)',
+        },
       },
     },
     plugins: {
       legend: {
-        display: false,
+        display: true,
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Bitcoin Price History',
+        font: {
+          size: 18,
+        },
       },
       datalabels: {
-        display: false,
+        display: false, // Explicitly disable datalabels
       },
     },
   }
 
-  const chartContainerStyle = {
-    width: '200px',
-    height: '50px',
-  }
-
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={chartContainerStyle}
-    >
+    <div style={{ height: '500px', width: '100%' }}>
       <Line data={chartData} options={chartOptions} />
     </div>
   )
 }
 
-export default SmallGraph
+export default BigGraph
