@@ -5,6 +5,7 @@ import DeltaChart from '../../components/bitcoin/DeltaChart'
 import BigGraph from '../../components/graph/BigGraph'
 import { GraphHistory } from '../../util/pages/graphsAndInfos/types'
 import { formatLargeNumber } from '../../util/pages/graphsAndInfos/helpers'
+import SocialLinks from '../../components/graph/SocialLinks'
 
 interface Delta {
   hour: number
@@ -206,9 +207,9 @@ const Bitcoin: React.FC = () => {
         <div className="col-6">
           <DeltaChart data={deltaData} />
         </div>
-        {/* <div className="col-6">
-          <BigGraph historyData={history} />
-        </div> */}
+        <div className="col-6">
+          <SocialLinks links={bitcoinData.links} />
+        </div>
       </div>
     </div>
   )

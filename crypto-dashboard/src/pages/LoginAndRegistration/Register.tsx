@@ -27,6 +27,8 @@ const Register: React.FC = () => {
       })
 
       if (!response.success) setShowAlert(true)
+
+      window.location.href = PagesURLs.Login
     } catch (error) {
       console.log(error)
     }
@@ -86,7 +88,7 @@ const Register: React.FC = () => {
 
               <div className="form-text text-center mb-5 text-dark">
                 Have account? Go to{' '}
-                <Link to={PagesURLs.Register} className="text-dark fw-bold">
+                <Link to={PagesURLs.Login} className="text-dark fw-bold">
                   {' '}
                   Login
                 </Link>

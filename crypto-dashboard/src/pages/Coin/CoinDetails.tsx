@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import { GraphsAndInfosApi } from '../../api/graphsAndInfos'
 import Loading from '../../components/global/Loading'
 import DeltaChart from '../../components/bitcoin/DeltaChart'
 import BigGraph from '../../components/graph/BigGraph'
 import { GraphHistory } from '../../util/pages/graphsAndInfos/types'
 import { formatLargeNumber } from '../../util/pages/graphsAndInfos/helpers'
-import { useParams } from 'react-router-dom'
+import SocialLinks from '../../components/graph/SocialLinks'
 
 interface Delta {
   hour: number
@@ -44,7 +45,7 @@ interface CoinData {
 
 const CoinDetails: React.FC = () => {
   const { code } = useParams()
-  const [bitcoinData, setBitcoinData] = useState<CoinData | null>(null)
+  const [coinData, setCoinData] = useState<CoinData | null>(null)
   const [history, setHistory] = useState<GraphHistory[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -55,7 +56,7 @@ const CoinDetails: React.FC = () => {
           currency: 'EUR',
           code: code?.toUpperCase() || 'BTC',
         })
-        setBitcoinData(response)
+        setCoinData(response)
 
         const response2 = await GraphsAndInfosApi.getSingleHistory({
           currency: 'EUR',
@@ -76,26 +77,27 @@ const CoinDetails: React.FC = () => {
 
   if (isLoading) return <Loading />
 
-  if (!bitcoinData) return <div>No data available</div>
+  if (!coinData) return <div>No data available</div>
 
   const deltaData = [
-    (bitcoinData.delta.hour - 1) * 100,
-    (bitcoinData.delta.day - 1) * 100,
-    (bitcoinData.delta.week - 1) * 100,
-    (bitcoinData.delta.month - 1) * 100,
-    (bitcoinData.delta.quarter - 1) * 100,
-    // (bitcoinData.delta.year - 1) * 100,
+    (coinData.delta.hour - 1) * 100,
+    (coinData.delta.day - 1) * 100,
+    (coinData.delta.week - 1) * 100,
+    (coinData.delta.month - 1) * 100,
+    (coinData.delta.quarter - 1) * 100,
+    // (coinData.delta.year - 1) * 100,
   ]
 
   return (
     <div className="container mt-4">
       <div className="row mb-4">
         <div className="col-12 text-center">
-          <img src={bitcoinData.png64} alt={`${bitcoinData.name} logo`} />
-          <h1 style={{ color: bitcoinData.color }}>
-            {bitcoinData.name} ({bitcoinData.symbol})
+          <img src={coinData.png64} alt={`${coinData.name} logo`} />
+          <h1 style={{ color: coinData.color }}>
+            {coinData.name} (
+            {coinData.symbol ? coinData.symbol : 'N/A'})
           </h1>
-          <p>Rank: {bitcoinData.rank}</p>
+          <p>Rank: {coinData.rank}</p>
         </div>
       </div>
       <div className="col-12">
@@ -108,7 +110,9 @@ const CoinDetails: React.FC = () => {
               <h5 className="card-title">
                 <i className="bi bi-currency-dollar"></i> Rate
               </h5>
-              <p className="card-text">${bitcoinData.rate.toFixed(2)}</p>
+              <p className="card-text">
+                EUR {coinData.rate ? coinData.rate.toFixed(2) : 'N/A'}
+              </p>
             </div>
           </div>
         </div>
@@ -119,7 +123,10 @@ const CoinDetails: React.FC = () => {
                 <i className="bi bi-graph-up"></i> Volume
               </h5>
               <p className="card-text">
-                ${formatLargeNumber(bitcoinData.volume)}
+                EUR{' '}
+                {coinData.volume
+                  ? formatLargeNumber(coinData.volume)
+                  : 'N/A'}
               </p>
             </div>
           </div>
@@ -130,7 +137,10 @@ const CoinDetails: React.FC = () => {
               <h5 className="card-title">
                 <i className="bi bi-bank"></i> Market Cap
               </h5>
-              <p className="card-text">${formatLargeNumber(bitcoinData.cap)}</p>
+              <p className="card-text">
+                EUR{' '}
+                {coinData.cap ? formatLargeNumber(coinData.cap) : 'N/A'}
+              </p>
             </div>
           </div>
         </div>
@@ -141,7 +151,10 @@ const CoinDetails: React.FC = () => {
                 <i className="bi bi-droplet"></i> Liquidity
               </h5>
               <p className="card-text">
-                ${formatLargeNumber(bitcoinData.liquidity)}
+                EUR{' '}
+                {coinData.liquidity
+                  ? formatLargeNumber(coinData.liquidity)
+                  : 'N/A'}
               </p>
             </div>
           </div>
@@ -153,7 +166,9 @@ const CoinDetails: React.FC = () => {
                 <i className="bi bi-wallet2"></i> Circulating Supply
               </h5>
               <p className="card-text">
-                {formatLargeNumber(bitcoinData.circulatingSupply)}
+                {coinData.circulatingSupply
+                  ? formatLargeNumber(coinData.circulatingSupply)
+                  : 'N/A'}
               </p>
             </div>
           </div>
@@ -165,7 +180,9 @@ const CoinDetails: React.FC = () => {
                 <i className="bi bi-box-seam"></i> Total Supply
               </h5>
               <p className="card-text">
-                {formatLargeNumber(bitcoinData.totalSupply)}
+                {coinData.totalSupply
+                  ? formatLargeNumber(coinData.totalSupply)
+                  : 'N/A'}
               </p>
             </div>
           </div>
@@ -177,8 +194,8 @@ const CoinDetails: React.FC = () => {
                 <i className="bi bi-trophy"></i> Max Supply
               </h5>
               <p className="card-text">
-                {bitcoinData.maxSupply
-                  ? formatLargeNumber(bitcoinData.maxSupply)
+                {coinData.maxSupply
+                  ? formatLargeNumber(coinData.maxSupply)
                   : 'N/A'}
               </p>
             </div>
@@ -191,7 +208,10 @@ const CoinDetails: React.FC = () => {
                 <i className="bi bi-stars"></i> All Time High (USD)
               </h5>
               <p className="card-text">
-                ${bitcoinData.allTimeHighUSD.toLocaleString()}
+                ${' '}
+                {coinData.allTimeHighUSD
+                  ? coinData.allTimeHighUSD.toFixed(2)
+                  : 'N/A'}
               </p>
             </div>
           </div>
@@ -203,7 +223,7 @@ const CoinDetails: React.FC = () => {
               <h5 className="card-title">
                 <i className="bi bi-shop"></i> Markets
               </h5>
-              <p className="card-text">{bitcoinData.markets}</p>
+              <p className="card-text">{coinData.markets}</p>
             </div>
           </div>
         </div>
@@ -212,9 +232,9 @@ const CoinDetails: React.FC = () => {
         <div className="col-6">
           <DeltaChart data={deltaData} />
         </div>
-        {/* <div className="col-6">
-          <BigGraph historyData={history} />
-        </div> */}
+        <div className="col-6">
+          <SocialLinks links={coinData.links} />
+        </div>
       </div>
     </div>
   )

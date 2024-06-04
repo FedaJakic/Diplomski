@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styles from './graphs.module.css'
 import CoinInfo from '../../components/graph/CoinInfo'
 import SmallGraph from '../../components/graph/SmallGraph'
@@ -18,6 +19,7 @@ interface PaginationResponse<T> {
 }
 
 const CryptoSearchAndGraphs: React.FC = () => {
+  const token = localStorage.getItem('token')
   const [rowData, setRowData] = useState<GraphsAndInfos[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [page, setPage] = useState<number>(1)
@@ -25,9 +27,7 @@ const CryptoSearchAndGraphs: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortOption, setSortOption] = useState<string>('rank_asc')
 
-  // const handleRowClick = (code: string) => {
-  //   history.push(`/crypto-search/${code}`)
-  // }
+  const navigate = useNavigate()
 
   const fetchTableData = async (page: number) => {
     setIsLoading(true)
@@ -63,11 +63,25 @@ const CryptoSearchAndGraphs: React.FC = () => {
     setSortOption(e.target.value)
   }
 
+  const handleRowClick = (code: string) => {
+    navigate(`/crypto-search/${code}`)
+  }
+
   const filteredData = rowData.filter(
     (data) =>
       data.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       data.code.toLowerCase().includes(searchQuery.toLowerCase())
   )
+
+  const getClassNameForDelta = (value: number) => {
+    if (value > 0) {
+      return `${styles.positive} ${styles['arrow-up']}`
+    } else if (value < 0) {
+      return `${styles.negative} ${styles['arrow-down']}`
+    } else {
+      return ''
+    }
+  }
 
   if (isLoading) return <Loading />
   else
@@ -90,13 +104,13 @@ const CryptoSearchAndGraphs: React.FC = () => {
             >
               <thead>
                 <tr className="bg-light text-center">
-                  <th scope="col">FAV</th>
+                  {token && <th scope="col">FAV</th>}
                   <th scope="col">#</th>
                   <th scope="col">Coin</th>
                   <th scope="col">Price</th>
                   <th scope="col">Market Cap</th>
                   <th scope="col">Volume 24h</th>
-                  <th scope="col">All-time high</th>
+                  <th scope="col">All-time high (USD)</th>
                   <th scope="col">1h</th>
                   <th scope="col">24h</th>
                   <th scope="col">Weekly</th>
@@ -104,10 +118,17 @@ const CryptoSearchAndGraphs: React.FC = () => {
               </thead>
               <tbody>
                 {filteredData.map((data, index) => (
-                  <tr className={`text-center ${styles.rowHover}`} key={index}>
-                    <th scope="row">
-                      <input className="form-check-input" type="checkbox" />
-                    </th>
+                  <tr
+                    className={`text-center ${styles.rowHover}`}
+                    key={index}
+                    onClick={() => handleRowClick(data.code)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {token && (
+                      <th scope="row">
+                        <input className="form-check-input" type="checkbox" />
+                      </th>
+                    )}
                     <td>{data.rank}</td>
                     <td>
                       <CoinInfo
@@ -120,8 +141,20 @@ const CryptoSearchAndGraphs: React.FC = () => {
                     <td>{formatLargeNumber(data.cap)}</td>
                     <td>{formatLargeNumber(data.volume)}</td>
                     <td>{data.all_time_high_usd}</td>
-                    <td>{data.delta_hour}</td>
-                    <td>{data.delta_day}</td>
+                    <td
+                      className={getClassNameForDelta(
+                        parseFloat(data.delta_hour)
+                      )}
+                    >
+                      {data.delta_hour}
+                    </td>
+                    <td
+                      className={getClassNameForDelta(
+                        parseFloat(data.delta_day)
+                      )}
+                    >
+                      {data.delta_day}
+                    </td>
                     <td>
                       <SmallGraph historyData={data.history_7_days} />
                     </td>

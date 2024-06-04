@@ -14,7 +14,6 @@ router.post(
   asyncHandler(async (req, res, next) => {
     const { currency, code } = req.body
 
-    console.log(currency, code)
     try {
       const singleCoinResponse = await fetch(
         'https://api.livecoinwatch.com/coins/single',

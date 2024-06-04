@@ -26,7 +26,7 @@ const Login: React.FC = () => {
         setToken(token)
         const decodedToken = tokenDecode(token)
         setRole(decodedToken.role)
-        window.location.href = '/'
+        window.location.href = PagesURLs.CryptoSearch
       }
     } catch (error) {
       console.log(error)
@@ -79,7 +79,7 @@ const Login: React.FC = () => {
 
                 <div className="text-center m-4">
                   <Button variant="primary" type="submit">
-                    Register
+                    Login
                   </Button>
                 </div>
               </Form>
