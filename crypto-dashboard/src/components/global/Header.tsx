@@ -10,6 +10,7 @@ import { PagesURLs, Role } from '../../util/env'
 const Header = () => {
   const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState<string>('')
+  const token = localStorage.getItem('token')
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault()
@@ -54,12 +55,14 @@ const Header = () => {
                 <span className="visually-hidden">(current)</span>
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="text-decoration-none nav-link" to={'/wallet'}>
-                Wallet
-                <span className="visually-hidden">(current)</span>
-              </Link>
-            </li>
+            {token && (
+              <li className="nav-item">
+                <Link className="text-decoration-none nav-link" to={'/wallet'}>
+                  Wallet
+                  <span className="visually-hidden">(current)</span>
+                </Link>
+              </li>
+            )}
             {localStorage.getItem('role') === Role.Admin && (
               <li className="nav-item">
                 <Link

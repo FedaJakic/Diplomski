@@ -121,6 +121,14 @@ const ListUser = () => {
                                     <i className="fa fa-trash fa-stack-1x fa-inverse"></i>
                                   </span>
                                 </Button>
+                                <Button variant="success" className="mx-1">
+                                  <Link
+                                    className="fa-stack"
+                                    to={`/send-message/${user.id}`}
+                                  >
+                                    <i className="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                  </Link>
+                                </Button>
                               </td>
                             </tr>
                           ))}

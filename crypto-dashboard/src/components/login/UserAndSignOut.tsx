@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Badge, Button } from 'react-bootstrap'
 import SignOutButton from '../global/buttons/signoutButton'
 import styles from './userAndSignOut.module.css'
-import { Link } from 'react-router-dom'
 import { tokenDecode } from '../../util/helpers/tokenHelpers'
 import { UserUrlsApi } from '../../api/user'
+import { MessageUrlsApi } from '../../api/message'
 
 const UserAndSignOut = () => {
   const token = localStorage.getItem('token')
   const [username, setUsername] = useState<string>('')
   const [userId, setUserId] = useState<string>('')
   const [role, setRole] = useState<string>('')
+  const [unseenMessagesCount, setUnseenMessagesCount] = useState<number>(0)
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -23,6 +26,12 @@ const UserAndSignOut = () => {
           setUsername(userInformation.username)
           setRole(userInformation.role_id)
           setUserId(String(userInformation.id))
+
+          // Fetch unseen messages count
+          const { unseenCount } = await MessageUrlsApi.getUnseenMessagesCount(
+            decodedToken.id
+          )
+          setUnseenMessagesCount(unseenCount)
         }
       } catch (error) {
         console.log(error)
@@ -30,7 +39,8 @@ const UserAndSignOut = () => {
     }
 
     fetchUserProfile()
-  }, [])
+  }, [token])
+
   return (
     <div>
       <hr style={{ margin: '20px 0' }} />
@@ -51,6 +61,22 @@ const UserAndSignOut = () => {
           <p className={styles.nameClient}>{username}</p>
           <p>{parseInt(role) === 1 ? 'Member' : 'Admin'}</p>
         </div>
+      </Link>
+      <Link
+        to={`/messages`}
+        className="d-flex flex-column justify-content-center align-items-center"
+      >
+        <Button variant="info" className="position-relative my-4">
+          Messages
+          {unseenMessagesCount > 0 && (
+            <Badge
+              bg="danger"
+              className="position-absolute top-0 start-100 translate-middle"
+            >
+              {unseenMessagesCount}
+            </Badge>
+          )}
+        </Button>
       </Link>
       <SignOutButton />
     </div>

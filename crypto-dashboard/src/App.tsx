@@ -17,6 +17,9 @@ import AccountDetails from './pages/AccountDetails/AccountDetails'
 import ListUser from './pages/ListUser/ListUser'
 import CryptoSearchAndGraphs from './pages/CryptoSearchAndGraphs/CryptoSearchAndGraphs'
 import CoinDetails from './pages/Coin/CoinDetails'
+import SendMessage from './pages/SendMessage/SendMessage'
+import MessageList from './pages/MessageList/MessageList'
+import MessageDetail from './pages/MessageDetail/MessageDetail'
 
 function App() {
   return (
@@ -66,6 +69,9 @@ function App() {
               element={<AccountDetails />}
             />
             <Route path={PagesURLs.ListUser} element={<ListUser />} />
+            <Route path="/send-message/:userId" element={<SendMessage />} />
+            <Route path="/messages" element={<MessageList />} />
+            <Route path="/messages/:messageId" element={<MessageDetail />} />
           </Routes>
         </main>
       </div>
