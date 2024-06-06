@@ -9,6 +9,7 @@ import news from './controllers/news.js'
 import cryptoInfo from './controllers/cryptoInfo.js'
 import bitcoin from './controllers/bitcoinInfo.js'
 import messages from './controllers/messages.js'
+import wallet from './controllers/wallet.js'
 import { testConnection, syncDatabase } from './db.js'
 
 dotenv.config()
@@ -44,6 +45,7 @@ app.use('/api/transactions', transactions)
 app.use('/api/crypto-info', cryptoInfo)
 app.use('/api/bitcoin', bitcoin)
 app.use('/api/message', messages)
+app.use('/api/wallet', wallet)
 
 app.get('/', (req, res) => {
   res.send('Welcome to Express & TypeScript Server')

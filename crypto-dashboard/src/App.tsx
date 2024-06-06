@@ -20,6 +20,7 @@ import CoinDetails from './pages/Coin/CoinDetails'
 import SendMessage from './pages/SendMessage/SendMessage'
 import MessageList from './pages/MessageList/MessageList'
 import MessageDetail from './pages/MessageDetail/MessageDetail'
+import UserWallet from './pages/Wallet/Wallet'
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
             <Route path="/send-message/:userId" element={<SendMessage />} />
             <Route path="/messages" element={<MessageList />} />
             <Route path="/messages/:messageId" element={<MessageDetail />} />
+            <Route path="/wallet" element={<UserWallet />} />
           </Routes>
         </main>
       </div>
