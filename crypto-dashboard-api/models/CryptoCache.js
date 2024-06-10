@@ -65,6 +65,11 @@ export const CryptoCache = sequelize.define(
       type: DataTypes.JSONB,
       allowNull: true,
     },
+    visible: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
   },
   {
     tableName: 'crypto_cache',

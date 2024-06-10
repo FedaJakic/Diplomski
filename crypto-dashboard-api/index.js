@@ -46,11 +46,3 @@ app.use('/api/crypto-info', cryptoInfo)
 app.use('/api/bitcoin', bitcoin)
 app.use('/api/message', messages)
 app.use('/api/wallet', wallet)
-
-app.get('/', (req, res) => {
-  res.send('Welcome to Express & TypeScript Server')
-})
-
-// app.listen(port, () => {
-//   console.log(`Server is Fire at http://localhost:${port}`)
-// })

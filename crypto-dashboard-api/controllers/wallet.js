@@ -8,7 +8,10 @@ import {
   deleteWallet,
   getUserWallets,
   addWallet,
-} from '../services/walletServicesNew.js'
+  sendBTC,
+  getTransactions,
+  getWallet,
+} from '../services/walletServices.js'
 
 const router = express.Router()
 
@@ -20,5 +23,8 @@ router.route('/get-wallet-address').post(getWalletAddress)
 router.route('/delete-wallet').post(deleteWallet)
 router.route('/user-wallets').post(getUserWallets)
 router.route('/add-wallet').post(addWallet)
+router.route('/send-btc').post(sendBTC)
+router.route('/get-transactions').post(getTransactions)
+router.route('/get-wallet').post(getWallet)
 
 export default router

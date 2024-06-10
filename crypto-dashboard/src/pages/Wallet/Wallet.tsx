@@ -15,8 +15,10 @@ import { WalletUrlsApi } from '../../api/wallet'
 import { tokenDecode } from '../../util/helpers/tokenHelpers'
 import { Wallet } from '../../util/pages/wallet/types.js'
 import Loading from '../../components/global/Loading'
+import { useNavigate } from 'react-router-dom'
 
 const UserWallet: React.FC = () => {
+  const navigate = useNavigate()
   const [show, setShow] = useState(false)
   const [walletName, setWalletName] = useState<string>()
   const [wallets, setWallets] = useState<Wallet[]>([])
@@ -26,6 +28,10 @@ const UserWallet: React.FC = () => {
   const [walletToDelete, setWalletToDelete] = useState<Wallet | null>(null)
 
   const token = localStorage.getItem('token')
+
+  const handleTransactions = (walletId: string) => {
+    navigate(`/transactions/${walletId}`)
+  }
 
   useEffect(() => {
     fetchUserWallets()
@@ -133,6 +139,13 @@ const UserWallet: React.FC = () => {
                           style={{ marginTop: '10px' }}
                         >
                           Delete Wallet
+                        </Button>
+                        <Button
+                          variant="primary"
+                          onClick={() => handleTransactions(wallet.id)}
+                          style={{ marginTop: '10px', marginLeft: '10px' }}
+                        >
+                          Transactions
                         </Button>
                       </Col>
                     </Row>

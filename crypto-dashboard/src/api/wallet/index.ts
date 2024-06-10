@@ -10,6 +10,9 @@ const WalletUrls = {
   getUserWallets: `${API_URL.api_url}/api/wallet/user-wallets`,
   addWallet: `${API_URL.api_url}/api/wallet/add-wallet`,
   deleteWallet: `${API_URL.api_url}/api/wallet/delete-wallet`,
+  sendBTC: `${API_URL.api_url}/api/wallet/send-btc`,
+  getTransactions: `${API_URL.api_url}/api/wallet/get-transactions`,
+  getWallet: `${API_URL.api_url}/api/wallet/get-wallet`,
 }
 
 export const WalletUrlsApi = {
@@ -68,5 +71,28 @@ export const WalletUrlsApi = {
       .post(WalletUrls.deleteWallet, {
         walletId,
       })
+      .then((res) => res.data),
+
+  sendBTC: async ({
+    walletName,
+    toAddress,
+    amount,
+  }: {
+    walletName: string
+    toAddress: string
+    amount: string
+  }) =>
+    axiosClient
+      .post(WalletUrls.sendBTC, { walletName, toAddress, amount })
+      .then((res) => res.data),
+
+  getTransactions: async ({ walletName }: { walletName: string }) =>
+    axiosClient
+      .post(WalletUrls.getTransactions, { walletName })
+      .then((res) => res.data),
+
+  getWallet: async ({ walletId }: { walletId: string }) =>
+    axiosClient
+      .post(WalletUrls.getWallet, { walletId })
       .then((res) => res.data),
 }
