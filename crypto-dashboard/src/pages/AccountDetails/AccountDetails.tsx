@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Button } from 'react-bootstrap'
-import { tokenDecode } from '../../util/helpers/tokenHelpers'
+import { Alert, Button, Modal } from 'react-bootstrap'
+import {
+  removeRole,
+  removeToken,
+  tokenDecode,
+} from '../../util/helpers/tokenHelpers'
 import { User } from '../../util/pages/userProfile/types'
 import { UserUrlsApi } from '../../api/user'
 import Loading from '../../components/global/Loading'
 import InfoModal from '../../components/global/InfoModal'
 import UploadModal from '../../components/global/UploadModal'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+import { PagesURLs } from '../../util/env'
 
 const AccountDetails: React.FC = () => {
   const token = localStorage.getItem('token')
   const { userId } = useParams<{ userId: string }>()
+  const navigate = useNavigate()
   const [userProfile, setUserProfile] = useState<User>({
     id: 0,
     username: '',
@@ -27,6 +33,7 @@ const AccountDetails: React.FC = () => {
   const [isAlert, setAlert] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false)
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
 
   const fetchUserProfile = async () => {
     try {
@@ -67,6 +74,22 @@ const AccountDetails: React.FC = () => {
         }
       }
       setIsLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const deleteUser = async () => {
+    try {
+      if (userId) {
+        const deletedRows = await UserUrlsApi.deleteUser({ userId })
+
+        if (deletedRows.success) {
+          removeToken()
+          removeRole()
+          window.location.href = PagesURLs.Login
+        }
+      }
     } catch (error) {
       console.log(error)
     }
@@ -237,6 +260,12 @@ const AccountDetails: React.FC = () => {
                   >
                     Save changes
                   </Button>
+                  <Button
+                    className="btn btn-danger mx-4"
+                    onClick={() => setShowDeleteModal(true)}
+                  >
+                    Delete profile
+                  </Button>
                 </form>
               </div>
             </div>
@@ -254,6 +283,26 @@ const AccountDetails: React.FC = () => {
           onHide={() => setShowUploadModal(false)}
           onUpload={handleUpload}
         />
+        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirm Deletion</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Are you sure you want to delete your profile? This action cannot be
+            undone.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={deleteUser}>
+              Delete
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     )
 }

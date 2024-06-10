@@ -1,4 +1,5 @@
 export interface GraphsAndInfos {
+  id: string
   name: string
   code: string
   rank: number
@@ -13,6 +14,7 @@ export interface GraphsAndInfos {
   delta_hour: string
   delta_day: string
   history_7_days: GraphHistory[]
+  visible: boolean
 }
 
 export interface GraphHistory {

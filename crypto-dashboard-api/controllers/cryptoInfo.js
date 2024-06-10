@@ -1,6 +1,5 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
-import { EXTERNAL_URL } from '../utils/constants.js'
 import { config } from 'dotenv'
 import { CryptoCache } from '../models/CryptoCache.js'
 import { fetchHistoryForCryptoOneWeek } from '../utils/cryptoInfo/helpers.js'
@@ -129,7 +128,6 @@ router.post(
 
       const mainList = await listResponse.json()
 
-      // Fetch all existing records from the database
       const existingCryptos = await CryptoCache.findAll()
       const existingCryptosMap = new Map(
         existingCryptos.map((crypto) => [crypto.code, crypto])
@@ -184,6 +182,33 @@ router.post(
     } catch (err) {
       const error = new Error(err.message)
       return next(error)
+    }
+  })
+)
+
+router.post(
+  '/visibility',
+  asyncHandler(async (req, res, next) => {
+    const { id, visibility } = req.body
+
+    try {
+      const crypto = await CryptoCache.findByPk(id)
+      if (!crypto) {
+        res.status(404).send({ success: false, message: 'Crypto not found' })
+        return
+      }
+
+      crypto.visible = visibility
+      await crypto.save()
+
+      res
+        .status(200)
+        .send({ success: true, message: 'Visibility updated', data: crypto })
+    } catch (err) {
+      console.error(err)
+      res
+        .status(500)
+        .send({ success: false, message: 'Failed to update visibility' })
     }
   })
 )

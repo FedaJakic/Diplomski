@@ -6,6 +6,7 @@ const GraphsAndInfos = {
   getCodeData: `${API_URL.api_url}/api/crypto-info/`,
   getSingleHistory: `${API_URL.api_url}/api/crypto-info/single-history`,
   getMempoolData: `${API_URL.api_url}/api/bitcoin/mempool`,
+  setVisibility: `${API_URL.api_url}/api/crypto-info/visibility`,
 }
 
 export const GraphsAndInfosApi = {
@@ -41,5 +42,16 @@ export const GraphsAndInfosApi = {
   }) =>
     axiosClient
       .post(GraphsAndInfos.getSingleHistory, { currency, code })
+      .then((res) => res.data),
+
+  updateCryptoVisibility: async ({
+    id,
+    visibility,
+  }: {
+    id: string
+    visibility: boolean
+  }) =>
+    axiosClient
+      .post(GraphsAndInfos.setVisibility, { id, visibility })
       .then((res) => res.data),
 }

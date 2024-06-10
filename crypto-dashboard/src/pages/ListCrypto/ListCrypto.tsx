@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import styles from './graphs.module.css'
 import CoinInfo from '../../components/graph/CoinInfo'
-import SmallGraph from '../../components/graph/SmallGraph'
 import { GraphsAndInfos } from '../../util/pages/graphsAndInfos/types'
 import { GraphsAndInfosApi } from '../../api/graphsAndInfos'
 import Loading from '../../components/global/Loading'
-import { Pagination } from 'react-bootstrap'
-import { formatLargeNumber } from '../../util/pages/graphsAndInfos/helpers'
+import { Button, Pagination } from 'react-bootstrap'
 import SearchBar from '../../components/graph/Search'
 import SortDropdown from '../../components/graph/SortDropdown'
+import styles from './listCrypto.module.css'
 
 interface PaginationResponse<T> {
   data: T[]
@@ -18,16 +15,13 @@ interface PaginationResponse<T> {
   totalPages: number
 }
 
-const CryptoSearchAndGraphs: React.FC = () => {
-  const token = localStorage.getItem('token')
+const ListCrypto: React.FC = () => {
   const [rowData, setRowData] = useState<GraphsAndInfos[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [page, setPage] = useState<number>(1)
   const [totalPages, setTotalPages] = useState<number>(1)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortOption, setSortOption] = useState<string>('rank_asc')
-
-  const navigate = useNavigate()
 
   const fetchTableData = async (page: number) => {
     setIsLoading(true)
@@ -47,6 +41,20 @@ const CryptoSearchAndGraphs: React.FC = () => {
     }
   }
 
+  const toggleVisibility = async (id: string, visibility: boolean) => {
+    try {
+      const updatedCrypto = await GraphsAndInfosApi.updateCryptoVisibility({
+        id,
+        visibility,
+      })
+      if (updatedCrypto.success) {
+        fetchTableData(page)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     fetchTableData(page)
   }, [page, sortOption])
@@ -63,25 +71,11 @@ const CryptoSearchAndGraphs: React.FC = () => {
     setSortOption(e.target.value)
   }
 
-  const handleRowClick = (code: string) => {
-    navigate(`/crypto-search/${code}`)
-  }
-
   const filteredData = rowData.filter(
     (data) =>
       data.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       data.code.toLowerCase().includes(searchQuery.toLowerCase())
   )
-
-  const getClassNameForDelta = (value: number) => {
-    if (value > 0) {
-      return `${styles.positive} ${styles['arrow-up']}`
-    } else if (value < 0) {
-      return `${styles.negative} ${styles['arrow-down']}`
-    } else {
-      return ''
-    }
-  }
 
   if (isLoading) return <Loading />
   else
@@ -104,68 +98,36 @@ const CryptoSearchAndGraphs: React.FC = () => {
             >
               <thead>
                 <tr className="bg-light text-center">
-                  {token && <th scope="col">FAV</th>}
                   <th scope="col">#</th>
-                  <th scope="col">Coin</th>
+                  <th scope="col" style={{ textAlign: 'left' }}>
+                    Coin
+                  </th>
                   <th scope="col">Price</th>
-                  <th scope="col">Market Cap</th>
-                  <th scope="col">Volume 24h</th>
-                  <th scope="col">All-time high (USD)</th>
-                  <th scope="col">1h</th>
-                  <th scope="col">24h</th>
-                  <th scope="col">Weekly</th>
+                  <th scope="col">Visible</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map(
-                  (data, index) =>
-                    data.visible && (
-                      <tr
-                        className={`text-center ${styles.rowHover}`}
-                        key={index}
-                        onClick={() => handleRowClick(data.code)}
-                        style={{ cursor: 'pointer' }}
+                {filteredData.map((data, index) => (
+                  <tr className={`text-center`} key={index}>
+                    <td>{data.rank}</td>
+                    <td>
+                      <CoinInfo
+                        name={data.name}
+                        shortName={data.code}
+                        image={data.image}
+                      />
+                    </td>
+                    <td>{data.current_price} EUR</td>
+                    <td>
+                      <Button
+                        variant={data.visible ? 'danger' : 'success'}
+                        onClick={() => toggleVisibility(data.id, !data.visible)}
                       >
-                        {token && (
-                          <th scope="row">
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                            />
-                          </th>
-                        )}
-                        <td>{data.rank}</td>
-                        <td>
-                          <CoinInfo
-                            name={data.name}
-                            shortName={data.code}
-                            image={data.image}
-                          />
-                        </td>
-                        <td>{data.current_price}</td>
-                        <td>{formatLargeNumber(data.cap)}</td>
-                        <td>{formatLargeNumber(data.volume)}</td>
-                        <td>{data.all_time_high_usd}</td>
-                        <td
-                          className={getClassNameForDelta(
-                            parseFloat(data.delta_hour)
-                          )}
-                        >
-                          {data.delta_hour}
-                        </td>
-                        <td
-                          className={getClassNameForDelta(
-                            parseFloat(data.delta_day)
-                          )}
-                        >
-                          {data.delta_day}
-                        </td>
-                        <td>
-                          <SmallGraph historyData={data.history_7_days} />
-                        </td>
-                      </tr>
-                    )
-                )}
+                        {data.visible ? 'Hide' : 'Show'}
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -203,4 +165,4 @@ const CryptoSearchAndGraphs: React.FC = () => {
     )
 }
 
-export default CryptoSearchAndGraphs
+export default ListCrypto

@@ -64,15 +64,26 @@ const Header = () => {
               </li>
             )}
             {localStorage.getItem('role') === Role.Admin && (
-              <li className="nav-item">
-                <Link
-                  className="text-decoration-none nav-link"
-                  to={PagesURLs.ListUser}
-                >
-                  Users
-                  <span className="visually-hidden">(current)</span>
-                </Link>
-              </li>
+              <>
+                <li className="nav-item">
+                  <Link
+                    className="text-decoration-none nav-link"
+                    to={PagesURLs.ListUser}
+                  >
+                    Users
+                    <span className="visually-hidden">(current)</span>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className="text-decoration-none nav-link"
+                    to={PagesURLs.CryptoVisibility}
+                  >
+                    Crypto visibility
+                    <span className="visually-hidden">(current)</span>
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
           <form className="d-flex w-50">

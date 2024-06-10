@@ -18,6 +18,7 @@ export enum PagesURLs {
   BitcoinBlockchain = '/latest-blocks',
   BlockHeight = '/block/:blockHeight',
   ListUser = '/list-user',
+  CryptoVisibility = '/crypto-visibility',
 }
 
 export enum Currencies {
