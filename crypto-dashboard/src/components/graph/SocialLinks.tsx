@@ -16,6 +16,7 @@ import {
   FaWeixin,
   FaSoundcloud,
 } from 'react-icons/fa'
+import { Container, Row, Col } from 'react-bootstrap'
 
 interface SocialLinksProps {
   links: { [key: string]: string | null }
@@ -41,25 +42,34 @@ const linkIcons: { [key: string]: React.ReactElement } = {
 
 const SocialLinks: React.FC<SocialLinksProps> = ({ links }) => {
   return (
-    <div className="d-flex flex-column align-items-center">
+    <Container className="text-center mt-4">
       <h5>Social Links</h5>
-      {Object.entries(links).map(
-        ([key, value]) =>
-          value && (
-            <div className="m-3" key={key} style={{ fontSize: '2rem' }}>
-              <a
-                href={value}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="m-2"
-                title={key.charAt(0).toUpperCase() + key.slice(1)}
+      <Row className="justify-content-center">
+        {Object.entries(links).map(
+          ([key, value]) =>
+            value && (
+              <Col
+                xs={6}
+                md={4}
+                lg={2}
+                className="mb-3 d-flex justify-content-center"
+                key={key}
               >
-                {linkIcons[key]}
-              </a>
-            </div>
-          )
-      )}
-    </div>
+                <a
+                  href={value}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="d-block"
+                  style={{ fontSize: '2rem' }}
+                  title={key.charAt(0).toUpperCase() + key.slice(1)}
+                >
+                  {linkIcons[key]}
+                </a>
+              </Col>
+            )
+        )}
+      </Row>
+    </Container>
   )
 }
 

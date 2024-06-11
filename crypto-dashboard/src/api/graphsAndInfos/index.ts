@@ -26,7 +26,7 @@ export const GraphsAndInfosApi = {
       .then((res) => res.data),
 
   getMempoolInfo: async () =>
-    axiosClient.get(GraphsAndInfos.getMempoolData).then((res) => res),
+    axiosClient.get(GraphsAndInfos.getMempoolData).then((res) => res.data),
 
   getCodeInfo: async ({ currency, code }: { currency: string; code: string }) =>
     axiosClient

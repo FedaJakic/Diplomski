@@ -19,6 +19,7 @@ export enum PagesURLs {
   BlockHeight = '/block/:blockHeight',
   ListUser = '/list-user',
   CryptoVisibility = '/crypto-visibility',
+  Favourites = '/favourites',
 }
 
 export enum Currencies {

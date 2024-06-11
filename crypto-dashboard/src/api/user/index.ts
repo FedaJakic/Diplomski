@@ -10,6 +10,10 @@ const UserUrls = {
   allUsers: `${API_URL.api_url}/api/all-users`,
   deleteUser: `${API_URL.api_url}/api/delete`,
   updateProfilePicture: `${API_URL.api_url}/api/profilePicture`,
+  getFavourites: `${API_URL.api_url}/api/favourites`,
+  addToFavourites: `${API_URL.api_url}/api/favourites/addToFavourites`,
+  removeFromFavourites: `${API_URL.api_url}/api/favourites/removeFromFavourites`,
+  isFavourite: `${API_URL.api_url}/api/favourites/isFavourite`,
 }
 
 export const UserUrlsApi = {
@@ -95,5 +99,43 @@ export const UserUrlsApi = {
           'Content-Type': 'multipart/form-data',
         },
       })
+      .then((res) => res.data),
+
+  getFavourites: async ({ userId }: { userId: string }) =>
+    axiosClient
+      .post(UserUrls.getFavourites, { userId })
+      .then((res) => res.data),
+
+  addToFacvourites: async ({
+    userId,
+    cryptoCode,
+  }: {
+    userId: string
+    cryptoCode: string
+  }) =>
+    axiosClient
+      .post(UserUrls.addToFavourites, { userId, cryptoCode })
+      .then((res) => res.data),
+
+  removeFromFavourites: async ({
+    userId,
+    cryptoCode,
+  }: {
+    userId: string
+    cryptoCode: string
+  }) =>
+    axiosClient
+      .post(UserUrls.removeFromFavourites, { userId, cryptoCode })
+      .then((res) => res.data),
+
+  isFavourite: async ({
+    userId,
+    cryptoCode,
+  }: {
+    userId: string
+    cryptoCode: string
+  }) =>
+    axiosClient
+      .post(UserUrls.isFavourite, { userId, cryptoCode })
       .then((res) => res.data),
 }

@@ -3,9 +3,9 @@ import styles from './sidebar.module.css'
 import SidebarMenuButtons from './buttons/sidebarMenuButtons'
 import {
   faMagnifyingGlass,
-  faChartLine,
   faNewspaper,
   faMoneyBillTransfer,
+  faStar,
 } from '@fortawesome/free-solid-svg-icons'
 import { faBitcoin, faHive } from '@fortawesome/free-brands-svg-icons'
 import { PagesURLs } from '../../util/env'
@@ -14,6 +14,7 @@ import { isTokenExist } from '../../util/helpers/tokenHelpers'
 import UserAndSignOut from '../login/UserAndSignOut'
 
 function Sidebar() {
+  const token = localStorage.getItem('token')
   return (
     <div className={styles.mainSidebar}>
       <div className={styles.sidebarScroll}>
@@ -43,6 +44,13 @@ function Sidebar() {
             linkTo={PagesURLs.BitcoinBlockchain}
             fontAwesomeIcon={faHive}
           />
+          {token && (
+            <SidebarMenuButtons
+              text={'Favourites'}
+              linkTo={PagesURLs.Favourites}
+              fontAwesomeIcon={faStar}
+            />
+          )}
         </div>
       </div>
       {isTokenExist() ? <UserAndSignOut /> : <LoginAndRegister />}

@@ -3,6 +3,7 @@ import { Role } from './models/Role.js'
 import { User } from './models/Users.js'
 import { Message } from './models/Message.js'
 import { Wallet } from './models/Wallet.js'
+import { Favourite } from './models/Favourites.js'
 import { CryptoCache } from './models/CryptoCache.js' // Import the new model
 
 export const createRelations = () => {

@@ -113,9 +113,6 @@ router.post(
   })
 )
 
-// @desc    Update user by ID
-// @route   PUT /api/users/userProfile/:userId
-// @access  Public
 router.put(
   '/userProfile',
   asyncHandler(async (req, res) => {

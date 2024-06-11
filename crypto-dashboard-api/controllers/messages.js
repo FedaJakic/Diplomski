@@ -12,7 +12,6 @@ router.post(
     try {
       const { senderId, receiverId, subject, content } = req.body
 
-      // Validate sender and receiver
       const sender = await User.findByPk(senderId)
       const receiver = await User.findByPk(receiverId)
 

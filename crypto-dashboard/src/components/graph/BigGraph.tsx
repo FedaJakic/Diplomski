@@ -9,9 +9,10 @@ Chart.register(...registerables)
 
 interface Props {
   historyData: GraphHistory[]
+  name: string
 }
 
-const BigGraph: React.FC<Props> = ({ historyData }) => {
+const BigGraph: React.FC<Props> = ({ historyData, name }) => {
   const [data, setData] = useState<{ date: number; rate: number }[]>([])
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const BigGraph: React.FC<Props> = ({ historyData }) => {
       },
       title: {
         display: true,
-        text: 'Bitcoin Price History',
+        text: `${name} Price History`,
         font: {
           size: 18,
         },

@@ -46,6 +46,7 @@ export const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+
     created: {
       allowNull: false,
       type: DataTypes.DATE,
@@ -60,3 +61,5 @@ export const User = sequelize.define(
 
 User.belongsTo(Role, { foreignKey: 'role_id' })
 Role.hasMany(User, { foreignKey: 'role_id' })
+
+export default User

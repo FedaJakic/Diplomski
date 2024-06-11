@@ -23,6 +23,7 @@ import MessageDetail from './pages/MessageDetail/MessageDetail'
 import UserWallet from './pages/Wallet/Wallet'
 import Transactions from './pages/Transactions/Transactions'
 import ListCrypto from './pages/ListCrypto/ListCrypto'
+import Favourites from './pages/Favourites/Favourites'
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
             <Route path="/wallet" element={<UserWallet />} />
             <Route path="/transactions/:walletId" element={<Transactions />} />
             <Route path={PagesURLs.CryptoVisibility} element={<ListCrypto />} />
+            <Route path={PagesURLs.Favourites} element={<Favourites />} />
           </Routes>
         </main>
       </div>

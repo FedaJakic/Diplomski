@@ -19,7 +19,6 @@ interface PaginationResponse<T> {
 }
 
 const CryptoSearchAndGraphs: React.FC = () => {
-  const token = localStorage.getItem('token')
   const [rowData, setRowData] = useState<GraphsAndInfos[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [page, setPage] = useState<number>(1)
@@ -104,7 +103,6 @@ const CryptoSearchAndGraphs: React.FC = () => {
             >
               <thead>
                 <tr className="bg-light text-center">
-                  {token && <th scope="col">FAV</th>}
                   <th scope="col">#</th>
                   <th scope="col">Coin</th>
                   <th scope="col">Price</th>
@@ -126,14 +124,6 @@ const CryptoSearchAndGraphs: React.FC = () => {
                         onClick={() => handleRowClick(data.code)}
                         style={{ cursor: 'pointer' }}
                       >
-                        {token && (
-                          <th scope="row">
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                            />
-                          </th>
-                        )}
                         <td>{data.rank}</td>
                         <td>
                           <CoinInfo

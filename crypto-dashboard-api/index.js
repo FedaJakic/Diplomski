@@ -10,6 +10,7 @@ import cryptoInfo from './controllers/cryptoInfo.js'
 import bitcoin from './controllers/bitcoinInfo.js'
 import messages from './controllers/messages.js'
 import wallet from './controllers/wallet.js'
+import favourites from './controllers/favourites.js'
 import { testConnection, syncDatabase } from './db.js'
 
 dotenv.config()
@@ -46,3 +47,4 @@ app.use('/api/crypto-info', cryptoInfo)
 app.use('/api/bitcoin', bitcoin)
 app.use('/api/message', messages)
 app.use('/api/wallet', wallet)
+app.use('/api/favourites', favourites)
