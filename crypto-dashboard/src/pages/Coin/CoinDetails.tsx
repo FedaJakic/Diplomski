@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons'
 import { UserUrlsApi } from '../../api/user'
 import { tokenDecode } from '../../util/helpers/tokenHelpers'
+import CoinBasicInfo from '../../components/coin/CoinBasicInfo'
 
 interface Delta {
   hour: number
@@ -140,128 +141,7 @@ const CoinDetails: React.FC = () => {
       <div className="col-12">
         <BigGraph historyData={history} name={coinData.name} />
       </div>
-      <div className="row">
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-currency-dollar"></i> Rate
-              </h5>
-              <p className="card-text">
-                EUR {coinData.rate ? coinData.rate.toFixed(2) : 'N/A'}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-graph-up"></i> Volume
-              </h5>
-              <p className="card-text">
-                EUR{' '}
-                {coinData.volume ? formatLargeNumber(coinData.volume) : 'N/A'}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-bank"></i> Market Cap
-              </h5>
-              <p className="card-text">
-                EUR {coinData.cap ? formatLargeNumber(coinData.cap) : 'N/A'}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-droplet"></i> Liquidity
-              </h5>
-              <p className="card-text">
-                EUR{' '}
-                {coinData.liquidity
-                  ? formatLargeNumber(coinData.liquidity)
-                  : 'N/A'}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-wallet2"></i> Circulating Supply
-              </h5>
-              <p className="card-text">
-                {coinData.circulatingSupply
-                  ? formatLargeNumber(coinData.circulatingSupply)
-                  : 'N/A'}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-box-seam"></i> Total Supply
-              </h5>
-              <p className="card-text">
-                {coinData.totalSupply
-                  ? formatLargeNumber(coinData.totalSupply)
-                  : 'N/A'}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-trophy"></i> Max Supply
-              </h5>
-              <p className="card-text">
-                {coinData.maxSupply
-                  ? formatLargeNumber(coinData.maxSupply)
-                  : 'N/A'}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-stars"></i> All Time High (USD)
-              </h5>
-              <p className="card-text">
-                $
-                {coinData.allTimeHighUSD
-                  ? coinData.allTimeHighUSD.toFixed(2)
-                  : 'N/A'}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-shop"></i> Markets
-              </h5>
-              <p className="card-text">{coinData.markets}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <CoinBasicInfo coinData={coinData} />
       <div className="row">
         <div className="col-6">
           <DeltaChart data={deltaData} />

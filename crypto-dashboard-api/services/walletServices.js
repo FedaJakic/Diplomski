@@ -147,8 +147,28 @@ export const addWallet = async (req, res) => {
 export const getUserWallets = async (req, res) => {
   const { userId } = req.body
   try {
-    const wallet = await Wallet.findAll({ where: { userId } })
-    res.status(200).send(wallet)
+    const wallets = await Wallet.findAll({ where: { userId } })
+
+    if (!wallets || wallets.length === 0) {
+      return res.status(404).send({ error: 'No wallets found for this user' })
+    }
+
+    const updatedWallets = await Promise.all(
+      wallets.map(async (wallet) => {
+        const client = new Client({
+          ...baseClientConfig,
+          wallet: wallet.defaultWalletName,
+        })
+        const balance = await client.getBalance()
+
+        wallet.balance = balance
+        await wallet.save()
+
+        return wallet
+      })
+    )
+
+    res.status(200).send(updatedWallets)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }

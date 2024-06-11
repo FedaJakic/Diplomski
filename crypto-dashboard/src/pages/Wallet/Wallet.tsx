@@ -9,6 +9,7 @@ import {
   Alert,
   Row,
   Col,
+  Spinner,
 } from 'react-bootstrap'
 import BitcoinCard from '../../components/wallet/BitcoinCard'
 import { WalletUrlsApi } from '../../api/wallet'
@@ -20,12 +21,13 @@ import { useNavigate } from 'react-router-dom'
 const UserWallet: React.FC = () => {
   const navigate = useNavigate()
   const [show, setShow] = useState(false)
-  const [walletName, setWalletName] = useState<string>()
+  const [walletName, setWalletName] = useState<string>('')
   const [wallets, setWallets] = useState<Wallet[]>([])
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [walletToDelete, setWalletToDelete] = useState<Wallet | null>(null)
+  const [isSaving, setIsSaving] = useState<boolean>(false)
 
   const token = localStorage.getItem('token')
 
@@ -38,6 +40,7 @@ const UserWallet: React.FC = () => {
   }, [])
 
   const fetchUserWallets = async () => {
+    setIsLoading(true)
     try {
       if (token) {
         const decodedToken = tokenDecode(token)
@@ -47,13 +50,19 @@ const UserWallet: React.FC = () => {
         setIsLoading(false)
       }
     } catch (err) {
-      setError('Failed to fetch wallets')
+      setIsLoading(false)
     }
   }
 
-  const handleClose = () => setShow(false)
+  const handleClose = () => {
+    setShow(false)
+    setWalletName('')
+  }
+
   const handleShow = () => setShow(true)
+
   const handleSave = async () => {
+    setIsSaving(true)
     try {
       if (token && walletName) {
         const decodedToken = tokenDecode(token)
@@ -63,15 +72,18 @@ const UserWallet: React.FC = () => {
           userId,
           walletName: walletName || `wallet_${Date.now()}`,
         })
-        fetchUserWallets()
-        setShow(false)
+        await fetchUserWallets()
+        handleClose()
       }
     } catch (err) {
       setError('Failed to create wallet')
+    } finally {
+      setIsSaving(false)
     }
   }
 
   const handleDeleteClose = () => setShowDeleteModal(false)
+
   const handleDeleteShow = (wallet: Wallet) => {
     setWalletToDelete(wallet)
     setShowDeleteModal(true)
@@ -168,25 +180,38 @@ const UserWallet: React.FC = () => {
             <Modal.Title>Create New Wallet</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
-              <Form.Group controlId="walletName">
-                <Form.Label>Wallet Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter wallet name"
-                  value={walletName}
-                  onChange={(e) => setWalletName(e.target.value)}
-                />
-              </Form.Group>
-            </Form>
+            {isSaving ? (
+              <div className="text-center">
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Creating wallet...</span>
+                </Spinner>
+                <p>Wallet is being creating, please wait...</p>
+              </div>
+            ) : (
+              <Form>
+                <Form.Group controlId="walletName">
+                  <Form.Label>Wallet Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter wallet name"
+                    value={walletName}
+                    onChange={(e) => setWalletName(e.target.value)}
+                  />
+                </Form.Group>
+              </Form>
+            )}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleSave}>
-              Save Changes
-            </Button>
+            {!isSaving && (
+              <>
+                <Button variant="secondary" onClick={handleClose}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={handleSave}>
+                  Save Changes
+                </Button>
+              </>
+            )}
           </Modal.Footer>
         </Modal>
 

@@ -1,5 +1,7 @@
 import React from 'react'
 import { formatLargeNumber } from '../../util/pages/graphsAndInfos/helpers'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { FaInfoCircle } from 'react-icons/fa'
 
 interface BitcoinData {
   name: string
@@ -23,6 +25,12 @@ interface BitcoinBasicInfoProps {
 }
 
 const BitcoinBasicInfo: React.FC<BitcoinBasicInfoProps> = ({ bitcoinData }) => {
+  const renderTooltip = (info: string) => (
+    <Tooltip>
+      <span>{info}</span>
+    </Tooltip>
+  )
+
   return (
     <>
       <div className="row mb-4">
@@ -35,108 +43,72 @@ const BitcoinBasicInfo: React.FC<BitcoinBasicInfoProps> = ({ bitcoinData }) => {
         </div>
       </div>
       <div className="row">
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-currency-dollar"></i> Rate
-              </h5>
-              <p className="card-text">${bitcoinData.rate.toLocaleString()}</p>
+        {[
+          {
+            title: 'Rate',
+            value: `$${bitcoinData.rate.toLocaleString()}`,
+            info: 'The current price of Bitcoin in USD.',
+          },
+          {
+            title: 'Volume',
+            value: `$${formatLargeNumber(bitcoinData.volume)}`,
+            info: 'The total trading volume of Bitcoin in the last 24 hours.',
+          },
+          {
+            title: 'Market Cap',
+            value: `$${formatLargeNumber(bitcoinData.cap)}`,
+            info: 'The total market capitalization of Bitcoin.',
+          },
+          {
+            title: 'Liquidity',
+            value: `$${formatLargeNumber(bitcoinData.liquidity)}`,
+            info: 'The amount of liquidity available in the Bitcoin market.',
+          },
+          {
+            title: 'Circulating Supply',
+            value: bitcoinData.circulatingSupply.toLocaleString(),
+            info: 'The number of Bitcoins currently in circulation.',
+          },
+          {
+            title: 'Total Supply',
+            value: bitcoinData.totalSupply.toLocaleString(),
+            info: 'The total number of Bitcoins that have been mined.',
+          },
+          {
+            title: 'Max Supply',
+            value: bitcoinData.maxSupply.toLocaleString(),
+            info: 'The maximum number of Bitcoins that will ever exist.',
+          },
+          {
+            title: 'All Time High (USD)',
+            value: `$${bitcoinData.allTimeHighUSD.toLocaleString()}`,
+            info: 'The highest price Bitcoin has ever reached in USD.',
+          },
+          {
+            title: 'Markets',
+            value: bitcoinData.markets,
+            info: 'The number of markets where Bitcoin is traded.',
+          },
+        ].map(({ title, value, info }) => (
+          <div className="col-md-4" key={title}>
+            <div className="card mb-4">
+              <div className="card-body">
+                <h5 className="card-title d-flex align-items-center">
+                  {title}
+                  <OverlayTrigger placement="top" overlay={renderTooltip(info)}>
+                    <span>
+                      <FaInfoCircle
+                        className="ms-2"
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </span>
+                  </OverlayTrigger>
+                </h5>
+                <p className="card-text">{value}</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-graph-up"></i> Volume
-              </h5>
-              <p className="card-text">
-                ${formatLargeNumber(bitcoinData.volume)}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-bank"></i> Market Cap
-              </h5>
-              <p className="card-text">${formatLargeNumber(bitcoinData.cap)}</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-droplet"></i> Liquidity
-              </h5>
-              <p className="card-text">
-                ${formatLargeNumber(bitcoinData.liquidity)}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-wallet2"></i> Circulating Supply
-              </h5>
-              <p className="card-text">
-                {bitcoinData.circulatingSupply.toLocaleString()}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-box-seam"></i> Total Supply
-              </h5>
-              <p className="card-text">
-                {bitcoinData.totalSupply.toLocaleString()}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-trophy"></i> Max Supply
-              </h5>
-              <p className="card-text">
-                {bitcoinData.maxSupply.toLocaleString()}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-stars"></i> All Time High (USD)
-              </h5>
-              <p className="card-text">
-                ${bitcoinData.allTimeHighUSD.toLocaleString()}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">
-                <i className="bi bi-shop"></i> Markets
-              </h5>
-              <p className="card-text">{bitcoinData.markets}</p>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </>
   )

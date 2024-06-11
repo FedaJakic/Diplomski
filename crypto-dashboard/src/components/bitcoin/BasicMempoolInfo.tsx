@@ -1,4 +1,6 @@
 import React from 'react'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { FaInfoCircle } from 'react-icons/fa'
 
 interface MempoolInfo {
   loaded: boolean
@@ -19,116 +21,85 @@ interface MempoolInfoProps {
 }
 
 const BasicMempoolInfo: React.FC<MempoolInfoProps> = ({ mempoolInfo }) => {
+  const renderTooltip = (info: string) => (
+    <Tooltip>
+      <span>{info}</span>
+    </Tooltip>
+  )
+
   return (
     <div className="row">
-      <div className="col-md-4">
-        <div className="card mb-4">
-          <div className="card-body">
-            <h5 className="card-title">
-              <i className="bi bi-box-arrow-in-down"></i> Size
-            </h5>
-            <p className="card-text">
-              {mempoolInfo.size.toLocaleString()} transactions
-            </p>
+      {[
+        {
+          title: 'Size',
+          value: `${mempoolInfo.size.toLocaleString()} transactions`,
+          info: 'The total number of transactions in the mempool.',
+        },
+        {
+          title: 'Bytes',
+          value: `${mempoolInfo.bytes.toLocaleString()} bytes`,
+          info: 'The total size of transactions in the mempool in bytes.',
+        },
+        {
+          title: 'Usage',
+          value: `${mempoolInfo.usage.toLocaleString()} bytes`,
+          info: 'The total memory usage for the mempool in bytes.',
+        },
+        {
+          title: 'Total Fee',
+          value: `${mempoolInfo.total_fee.toFixed(2)} BTC`,
+          info: 'The total fee of transactions in the mempool.',
+        },
+        {
+          title: 'Max Mempool',
+          value: `${mempoolInfo.maxmempool.toLocaleString()} bytes`,
+          info: 'The maximum memory usage allowed for the mempool in bytes.',
+        },
+        {
+          title: 'Min Mempool Fee',
+          value: `${mempoolInfo.mempoolminfee} BTC`,
+          info: 'The minimum fee rate for transactions to be accepted into the mempool.',
+        },
+        {
+          title: 'Min Relay Tx Fee',
+          value: `${mempoolInfo.minrelaytxfee} BTC`,
+          info: 'The minimum fee rate for transactions to be relayed to other nodes.',
+        },
+        {
+          title: 'Incremental Relay Fee',
+          value: `${mempoolInfo.incrementalrelayfee} BTC`,
+          info: 'The fee rate increment used to calculate the minimum fee rate for relay.',
+        },
+        {
+          title: 'Unbroadcast Count',
+          value: mempoolInfo.unbroadcastcount,
+          info: 'The number of transactions in the mempool that have not been broadcast yet.',
+        },
+        {
+          title: 'Full RBF',
+          value: mempoolInfo.fullrbf ? 'Yes' : 'No',
+          info: 'Whether the full Replace-by-Fee (RBF) policy is enabled.',
+        },
+      ].map(({ title, value, info }) => (
+        <div className="col-md-4" key={title}>
+          <div className="card mb-4">
+            <div className="card-body">
+              <h5 className="card-title d-flex align-items-center">
+                {title}
+                <OverlayTrigger placement="top" overlay={renderTooltip(info)}>
+                  <span>
+                    <FaInfoCircle
+                      className="ms-2"
+                      style={{ cursor: 'pointer' }}
+                    />
+                  </span>
+                </OverlayTrigger>
+              </h5>
+              <p className="card-text">{value}</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="col-md-4">
-        <div className="card mb-4">
-          <div className="card-body">
-            <h5 className="card-title">
-              <i className="bi bi-file-earmark-binary"></i> Bytes
-            </h5>
-            <p className="card-text">
-              {mempoolInfo.bytes.toLocaleString()} bytes
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4">
-        <div className="card mb-4">
-          <div className="card-body">
-            <h5 className="card-title">
-              <i className="bi bi-cpu"></i> Usage
-            </h5>
-            <p className="card-text">
-              {mempoolInfo.usage.toLocaleString()} bytes
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4">
-        <div className="card mb-4">
-          <div className="card-body">
-            <h5 className="card-title">
-              <i className="bi bi-currency-bitcoin"></i> Total Fee
-            </h5>
-            <p className="card-text">{mempoolInfo.total_fee.toFixed(2)} BTC</p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4">
-        <div className="card mb-4">
-          <div className="card-body">
-            <h5 className="card-title">
-              <i className="bi bi-box-seam"></i> Max Mempool
-            </h5>
-            <p className="card-text">
-              {mempoolInfo.maxmempool.toLocaleString()} bytes
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4">
-        <div className="card mb-4">
-          <div className="card-body">
-            <h5 className="card-title">
-              <i className="bi bi-currency-exchange"></i> Min Mempool Fee
-            </h5>
-            <p className="card-text">{mempoolInfo.mempoolminfee} BTC</p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4">
-        <div className="card mb-4">
-          <div className="card-body">
-            <h5 className="card-title">
-              <i className="bi bi-currency-exchange"></i> Min Relay Tx Fee
-            </h5>
-            <p className="card-text">{mempoolInfo.minrelaytxfee} BTC</p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4">
-        <div className="card mb-4">
-          <div className="card-body">
-            <h5 className="card-title">
-              <i className="bi bi-currency-exchange"></i> Incremental Relay Fee
-            </h5>
-            <p className="card-text">{mempoolInfo.incrementalrelayfee} BTC</p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4">
-        <div className="card mb-4">
-          <div className="card-body">
-            <h5 className="card-title">
-              <i className="bi bi-broadcast"></i> Unbroadcast Count
-            </h5>
-            <p className="card-text">{mempoolInfo.unbroadcastcount}</p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4">
-        <div className="card mb-4">
-          <div className="card-body">
-            <h5 className="card-title">
-              <i className="bi bi-arrows-angle-expand"></i> Full RBF
-            </h5>
-            <p className="card-text">{mempoolInfo.fullrbf ? 'Yes' : 'No'}</p>
-          </div>
-        </div>
-      </div>
+      ))}
     </div>
   )
 }
