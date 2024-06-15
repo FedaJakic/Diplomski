@@ -2,7 +2,6 @@ import express from 'express'
 import asyncHandler from 'express-async-handler'
 import { User } from '../models/Users.js'
 import { Message } from '../models/Message.js'
-import { EXTERNAL_URL } from '../utils/constants.js'
 
 const router = express.Router()
 
@@ -99,7 +98,6 @@ router.get(
   })
 )
 
-// Mark message as viewed
 router.patch(
   '/:messageId/view',
   asyncHandler(async (req, res, next) => {
